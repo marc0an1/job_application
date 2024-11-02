@@ -1,0 +1,67 @@
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
+    <div class="flex flex-column align-items-center justify-content-center">
+        <img src="assets/layout/images/{{layoutService.config().colorScheme === 'light' ? 'logo-dark' : 'logo-white'}}.svg" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">                
+        <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+            <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+                <div class="text-center mb-5">
+                    <div class="text-900 text-3xl font-medium mb-3">Create Your Account!</div>
+                    <span class="text-600 font-medium">Sign up to get started</span>
+                </div>
+
+                <form (ngSubmit)="signup()">
+                    <div>
+                        <label for="username" class="block text-900 text-xl font-medium mb-2">Username</label>
+                        <input id="username" type="text" [(ngModel)]="username" name="username" placeholder="Username" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                    </div>
+                    <div>
+                        <label for="firstName" class="block text-900 text-xl font-medium mb-2">First Name</label>
+                        <input id="firstName" type="text" [(ngModel)]="firstName" name="firstName" placeholder="First Name" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-900 text-xl font-medium mb-2">Last Name</label>
+                        <input id="lastName" type="text" [(ngModel)]="lastName" name="lastName" placeholder="Last Name" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                    </div>
+                    <div>
+                        <label for="email" class="block text-900 text-xl font-medium mb-2">Email</label>
+                        <input id="email" type="email" [(ngModel)]="email" name="email" placeholder="Email" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                    </div>
+                    <div>
+                        <label for="password" class="block text-900 text-xl font-medium mb-2">Password</label>
+                        <input id="password" type="password" [(ngModel)]="password" name="password" placeholder="Password" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                    </div>
+                    <div>
+                        <label for="confirmPassword" class="block text-900 text-xl font-medium mb-2">Confirm Password</label>
+                        <input id="confirmPassword" type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirm Password" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                    </div>
+                    <div>
+                        <label for="street" class="block text-900 text-xl font-medium mb-2">Street</label>
+                        <input id="street" type="text" [(ngModel)]="street" name="street" placeholder="Street" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                    </div>
+                    <div>
+                        <label for="city" class="block text-900 text-xl font-medium mb-2">City</label>
+                        <input id="city" type="text" [(ngModel)]="city" name="city" placeholder="City" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                    </div>
+                    <div>
+                        <label for="state" class="block text-900 text-xl font-medium mb-2">State</label>
+                        <input id="state" type="text" [(ngModel)]="state" name="state" placeholder="State" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                    </div>
+                    <div>
+                        <label for="zipCode" class="block text-900 text-xl font-medium mb-2">Zip Code</label>
+                        <input id="zipCode" type="text" [(ngModel)]="zipCode" name="zipCode" placeholder="Zip Code" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                    </div>
+                    <div>
+                        <label for="country" class="block text-900 text-xl font-medium mb-2">Country</label>
+                        <input id="country" type="text" [(ngModel)]="country" name="country" placeholder="Country" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                    </div>
+                    <div>
+                        <label for="phoneNumber" class="block text-900 text-xl font-medium mb-2">Phone Number</label>
+                        <input id="phoneNumber" type="tel" [(ngModel)]="phoneNumber" name="phoneNumber" placeholder="Phone Number" class="w-full md:w-30rem mb-5" style="padding:1rem" />
+                    </div>
+
+                    <button pButton pRipple label="Signup" class="w-full p-3 text-xl" type="submit"></button>
+                </form>
+                <p class="text-center mt-5">Already have an account? <a routerLink="/login" style="color: var(--primary-color)">Login</a></p>
+            </div>
+        </div>
+    </div>
+</div>
