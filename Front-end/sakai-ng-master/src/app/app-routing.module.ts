@@ -1,8 +1,19 @@
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
+import { DashboardComponent } from './demo/components/dashboard/dashboard.component';
+import { MyJobApplicationsComponent } from './demo/components/my-job-applications/my-job-applications.component';
+import { MyCalendarComponent } from './demo/components/my-calendar/my-calendar.component';
+
+const routes: Routes = [
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
+    { path: 'dashboard', component: DashboardComponent},
+    { path: 'my-job-applications', component: MyJobApplicationsComponent},
+    { path: 'my-calendar', component: MyCalendarComponent}
+];
+
 
 @NgModule({
     imports: [

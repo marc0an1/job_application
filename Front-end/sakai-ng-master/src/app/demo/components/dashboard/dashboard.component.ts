@@ -11,7 +11,26 @@ import { HttpClient } from '@angular/common/http';
 @Component({
     templateUrl: './dashboard.component.html',
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
+
+    items: MenuItem[]; // Define the items property
+
+    ngOnInit() {
+        this.items = [
+        { label: 'Update', icon: 'pi pi-refresh', command: () => { this.update(); } },
+        { label: 'Delete', icon: 'pi pi-times', command: () => { this.delete(); } },
+        { label: 'Angular.io', icon: 'pi pi-info', url: 'http://angular.io' },
+        { label: 'Setup', icon: 'pi pi-cog', routerLink: ['/setup'] }
+        ];
+    }
+
+    update() {
+        console.log('Update clicked');
+    }
+
+    delete() {
+        console.log('Delete clicked');
+    }
 
     jobApplication = {
         companyName: '',

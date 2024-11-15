@@ -14,10 +14,28 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
+import { MyJobApplicationsComponent } from './demo/components/my-job-applications/my-job-applications.component'; // Import standalone component
+import { MyCalendarComponent } from './demo/components/my-calendar/my-calendar.component';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-    declarations: [AppComponent, NotfoundComponent],
-    imports: [AppRoutingModule, AppLayoutModule],
+    declarations: [AppComponent, MyCalendarComponent, NotfoundComponent],
+    imports: [
+        AppRoutingModule, 
+        AppLayoutModule,
+        FormsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        CalendarModule, // Add CalendarModule to imports
+        DropdownModule, // Add DropdownModule to imports
+        InputGroupModule, // Add InputGroupModule to imports
+        FullCalendarModule, // Add FullCalendarModule to imports
+        MyJobApplicationsComponent,
+    ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
