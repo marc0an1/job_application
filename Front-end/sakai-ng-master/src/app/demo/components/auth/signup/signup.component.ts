@@ -59,7 +59,7 @@ export class SignupComponent {
             response => {
                 if (response) {
                 console.log('Signup successful:', response);
-                this.router.navigate(['/login']); // Navigate to confirmation page after successful signup
+                this.router.navigate(['/auth/login']); // Navigate to confirmation page after successful signup
             }else{
                 console.log('Signup Failed: Invalid response', response);
                 alert("Signup Failed. Please try again.");
