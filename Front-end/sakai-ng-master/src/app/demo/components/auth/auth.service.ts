@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -12,23 +13,42 @@ export class AuthService {
 
   // Method to log in the user
   login(credentials: { username: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/verify`, credentials);
+    return this.http.post(`${this.apiUrl}/verify`, credentials).pipe(
+      tap((response: any) => {
+        const token = response.token; // Assume the token is returned in the response
+        if (token) {
+          sessionStorage.setItem('authToken', token); // Store the token in sessionStorage
+        }
+      })
+    );
   }
 
   // Method to log out the user
   logout(): void {
-    // Logic for logging out (e.g., removing tokens from local storage)
-    localStorage.removeItem('authToken'); // Example: remove the auth token
+    sessionStorage.removeItem('authToken'); // Clear the auth token from sessionStorage
   }
 
   // Method to check if the user is logged in
   isLoggedIn(): boolean {
-    // Logic to check if the user is logged in (e.g., checking for a token)
-    return !!localStorage.getItem('authToken'); // Example
+    return !!sessionStorage.getItem('authToken'); // Check for token in sessionStorage
   }
 
   // Method to sign up the user
   signup(signupData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/createUser`, signupData);
+  }
+
+  // Method to retrieve the token from sessionStorage
+  getToken(): string | null {
+    return sessionStorage.getItem('authToken');
+  }
+
+  // Example method to make an authenticated request using the JWT
+  getProtectedData(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    return this.http.get('YOUR_PROTECTED_API_ENDPOINT', { headers });
   }
 }

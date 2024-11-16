@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AuthService } from '../auth.service'; // Adjust this import path as needed
 import { Router } from '@angular/router';
+import { timestamp } from 'rxjs';
 
 @Component({
     selector: 'app-signup',
@@ -51,14 +52,19 @@ export class SignupComponent {
                 zipCode: this.zipCode,
                 country: this.country
             },
-            phoneNumber: this.phoneNumber
+            phoneNumber: Number(this.phoneNumber)
         };
 
         this.authService.signup(signupData).subscribe(
             response => {
+                if (response) {
                 console.log('Signup successful:', response);
-                this.router.navigate(['/confirmation']); // Navigate to confirmation page after successful signup
-            },
+                this.router.navigate(['/login']); // Navigate to confirmation page after successful signup
+            }else{
+                console.log('Signup Failed: Invalid response', response);
+                alert("Signup Failed. Please try again.");
+            }
+        },
             error => {
                 console.error('Signup failed:', error);
                 alert('Signup failed. Please try again.'); // Notify the user of the error

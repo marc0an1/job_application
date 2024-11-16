@@ -21,7 +21,6 @@ public class UserController {
     public ResponseEntity<User> createUser(@RequestBody User user)
     {
         return service.createUser(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getAddress(), user.getPhoneNumber());
-
     }
 
     @PutMapping ("/updateUser/")  // not actualized method
