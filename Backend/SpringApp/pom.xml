@@ -64,6 +64,14 @@
 		</dependency>
 
 		<dependency>
+    		<groupId>javax.servlet</groupId>
+    		<artifactId>javax.servlet-api</artifactId>
+    		<version>4.0.1</version> <!-- Use a version compatible with your application -->
+    		<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
 			<version>0.12.6</version>

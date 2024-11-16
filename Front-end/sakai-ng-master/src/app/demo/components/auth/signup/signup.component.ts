@@ -3,6 +3,7 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AuthService } from '../auth.service'; // Adjust this import path as needed
 import { Router } from '@angular/router';
 import { timestamp } from 'rxjs';
+import { HttpErrorResponse, HttpParamsOptions } from '@angular/common/http';
 
 @Component({
     selector: 'app-signup',
@@ -65,10 +66,15 @@ export class SignupComponent {
                 alert("Signup Failed. Please try again.");
             }
         },
-            error => {
-                console.error('Signup failed:', error);
-                alert('Signup failed. Please try again.'); // Notify the user of the error
-            }
+        (error: HttpErrorResponse) => {
+            console.error('Signup failed:', error);
+            if (error.status === 400) {
+                const errorMessage = error.headers.get('Error');
+                alert("Email or Username are already taken. Please use a different email or username and try again."); // Display the error message from the header
+              } else {
+                alert('Signup failed. Please try again.');
+              }
+        }
         );
     }
 }

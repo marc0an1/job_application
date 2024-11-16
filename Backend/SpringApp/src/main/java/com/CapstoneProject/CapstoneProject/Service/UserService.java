@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 // In the user service is located the business logic, every method that the object is going to use must be in the object Service.
@@ -32,6 +33,9 @@ public class UserService {
 
     @Autowired
     AuthenticationManager authManager;
+
+    @Autowired 
+    private HttpSession session;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
