@@ -26,8 +26,8 @@
                         <input id="email" type="email" [(ngModel)]="email" name="email" placeholder="Email" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
                     </div>
                     <div>
-                        <label for="password" class="block text-900 text-xl font-medium mb-2">Password</label>
-                        <input id="password" type="password" [(ngModel)]="password" name="password" placeholder="Password" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                        <label for="password" class="block text-900 font-medium text-xl mb-2">Password</label>
+                        <p-password id="password" [(ngModel)]="password" name="password" placeholder="Password" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem" required></p-password>
                     </div>
                     <div>
                         <label for="confirmPassword" class="block text-900 text-xl font-medium mb-2">Confirm Password</label>

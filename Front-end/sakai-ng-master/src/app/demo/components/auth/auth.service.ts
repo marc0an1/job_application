@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -13,9 +13,9 @@ export class AuthService {
 
   // Method to log in the user
   login(credentials: { username: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/verify`, credentials).pipe(
-      tap((response: any) => {
-        const token = response.token; // Assume the token is returned in the response
+    return this.http.post(`${this.apiUrl}/verify`, credentials, {responseType: 'text'}).pipe(
+      tap((response: string) => {
+        const token = response; // token sent as plain text
         if (token) {
           sessionStorage.setItem('authToken', token); // Store the token in sessionStorage
         }
@@ -50,5 +50,20 @@ export class AuthService {
       Authorization: `Bearer ${token}`
     });
     return this.http.get('YOUR_PROTECTED_API_ENDPOINT', { headers });
+  }
+}
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const authToken = sessionStorage.getItem('authToken');
+    if (authToken) {
+      const cloned = req.clone({
+        headers: req.headers.set('Authorization', `Bearer ${authToken}`)
+      });
+      return next.handle(cloned);
+    } else {
+      return next.handle(req);
+    }
   }
 }
