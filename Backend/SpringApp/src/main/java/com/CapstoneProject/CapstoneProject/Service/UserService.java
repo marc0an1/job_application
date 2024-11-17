@@ -34,9 +34,6 @@ public class UserService {
     @Autowired
     AuthenticationManager authManager;
 
-//    @Autowired
-//    private HttpSession session;
-
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     //Error Checking: Allow multiple accounts with the same email?
@@ -57,7 +54,7 @@ public class UserService {
         Optional<User> usernameExists = Optional.ofNullable(userRepo.findByUsername(username));
 
         if(emailExists.isPresent()){  //An email can only have one account
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).header("Error", "Email already exists").body(user);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).header("Error", "Email already exists").body(null);
         }
 
         if (usernameExists.isPresent()) { // Username are unique for each account

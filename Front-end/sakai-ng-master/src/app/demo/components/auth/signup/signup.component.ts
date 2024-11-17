@@ -69,6 +69,7 @@ export class SignupComponent {
         (error: HttpErrorResponse) => {
             console.error('Signup failed:', error);
             if (error.status === 400) {
+                console.log('Headers:', error.headers.keys());
                 const errorMessage = error.headers.get('Error');
                 alert("Email or Username are already taken. Please use a different email or username and try again."); // Display the error message from the header
               } else {
