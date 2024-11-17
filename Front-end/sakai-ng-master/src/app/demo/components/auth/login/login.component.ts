@@ -32,7 +32,7 @@ export class LoginComponent {
                 if(token){
                     sessionStorage.setItem('authToken',token);
                     console.log('Login Successful:', response);
-                    this.router.navigate(['/']);
+                    this.router.navigate(['/dashboard']);
                 }else{
                     console.error('no token received');
                     alert('Login failed. No token received');

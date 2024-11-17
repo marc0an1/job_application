@@ -8,7 +8,7 @@
                     <span class="text-600 font-medium">Sign up to get started</span>
                 </div>
 
-                <form (ngSubmit)="signup()">
+                <form (ngSubmit)="signup()" #signupForm="ngForm">
                     <div>
                         <label for="username" class="block text-900 text-xl font-medium mb-2">Username</label>
                         <input id="username" type="text" [(ngModel)]="username" name="username" placeholder="Username" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
@@ -23,8 +23,12 @@
                     </div>
                     <div>
                         <label for="email" class="block text-900 text-xl font-medium mb-2">Email</label>
-                        <input id="email" type="email" [(ngModel)]="email" name="email" placeholder="Email" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
-                    </div>
+                        <input id="email" type="email" [(ngModel)]="email" name="email" placeholder="Email" class="w-full md:w-30rem mb-5" style="padding:1rem" required email #emailInput="ngModel" />
+                        <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="alert alert-danger">
+                          <div *ngIf="emailInput.errors?.required">Email is required.</div>
+                          <div *ngIf="emailInput.errors?.email">Email must contain &#64;.</div>
+                        </div>
+                      </div>
                     <div>
                         <label for="password" class="block text-900 font-medium text-xl mb-2">Password</label>
                         <p-password id="password" [(ngModel)]="password" name="password" placeholder="Password" [toggleMask]="true" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem" required></p-password>
@@ -55,7 +59,7 @@
                     </div>
                     <div>
                         <label for="phoneNumber" class="block text-900 text-xl font-medium mb-2">Phone Number</label>
-                        <input id="phoneNumber" type="tel" [(ngModel)]="phoneNumber" name="phoneNumber" placeholder="Phone Number" class="w-full md:w-30rem mb-5" style="padding:1rem" />
+                        <input id="phoneNumber" type="number" [(ngModel)]="phoneNumber" name="phoneNumber" placeholder="Phone Number" class="w-full md:w-30rem mb-5" style="padding:1rem" required maxlength="10"/>
                     </div>
 
                     <button pButton pRipple label="Signup" class="w-full p-3 text-xl" type="submit"></button>
