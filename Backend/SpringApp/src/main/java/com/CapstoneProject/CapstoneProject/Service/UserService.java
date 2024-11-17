@@ -34,8 +34,8 @@ public class UserService {
     @Autowired
     AuthenticationManager authManager;
 
-    @Autowired 
-    private HttpSession session;
+//    @Autowired
+//    private HttpSession session;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
