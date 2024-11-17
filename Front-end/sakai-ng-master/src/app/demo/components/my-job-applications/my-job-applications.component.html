@@ -1,1 +1,96 @@
-<p>my-job-applications works!</p>
+<div class="p-grid">
+    <div class="p-col-12">
+        <button pButton icon="pi pi-plus" label="Add Job Application" (click)="showDialog()"></button>
+    </div>
+</div>
+ 
+<p-dialog header="Job Application Submission Form" [(visible)]="displayDialog" [modal]="true" [style]="{width: '50vw'}">
+    <div class="p-fluid p-formgrid grid">
+        <div class="field col-12">
+            <label for="companyName">Company Name</label>
+            <span class="p-float-label">
+                <input id="companyName" type="text" pInputText [(ngModel)]="jobApplication.companyName" style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
+            </span>
+        </div>
+        <div class="field col-12">
+            <label for="jobTitle">Job Title</label>
+            <span class="p-float-label">
+                <input id="jobTitle" type="text" pInputText [(ngModel)]="jobApplication.jobTitle" style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
+            </span>
+        </div>
+        <div class="field col-12">
+            <label for="dateApplied">Date Applied</label>
+            <p-calendar [(ngModel)]="jobApplication.dateApplied" [showIcon]="true" inputId="icon"></p-calendar>
+        </div>
+        <div class="field col-12">
+            <label for="status">Status</label>
+            <p-dropdown [options]="statusOptions" optionLabel="name" [(ngModel)]="jobApplication.status" placeholder="Select a status"></p-dropdown>
+        </div>
+        <div class="field col-12">
+            <label for="notes">Notes</label>
+            <span class="p-float-label">
+                <input id="notes" type="text" pInputText [(ngModel)]="jobApplication.notes" style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
+            </span>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <button pButton pRipple label="Submit" (click)="submitForm()"></button>
+        </div>
+    </div>
+</p-dialog>
+
+<div class="col-12">
+    <div class="card">
+        <h5>Job Applications</h5>
+        <p-dataView #dv [value]="filteredApplications" [paginator]="true" [rows]="9" filterBy="companyName" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+            <ng-template pTemplate="header">
+                <div class="flex flex-column md:flex-row md:justify-content-center md:align-items-center gap-2">
+                    <p-dropdown [options]="sortOptions" placeholder="Sort By" (onChange)="onSortChange($event)" style="margin-right: 3rem"></p-dropdown>
+                    <!-- <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input type="search" pInputText placeholder="Search by Company Name" (input)="onFilter($event)">
+                    </span>    -->
+					
+					<div class="col-12 mb-2 lg:col-4 lg:mb-0">
+						<span class="p-input-icon-right">
+							<input type="text" pInputText placeholder="Search" style="width: 100%; height: 2.5rem; font-size: 1.2rem;"/>
+							<i class="pi pi-search"></i>
+						</span>
+					</div>
+                    <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                </div>
+            </ng-template>
+
+            <ng-template let-application pTemplate="listItem">
+                <div class="col-12">
+                    <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
+                        <div class="flex-1 flex flex-column align-items-center text-center md:text-left">
+                            <div class="font-bold text-2xl">{{application.companyName}}</div>
+                            <div class="mb-2">{{application.jobTitle}}</div>
+                            <div class="mb-2">{{application.dateApplied | date}}</div>
+                            <div class="mb-2">{{application.status}}</div>
+                            <div class="mb-2">{{application.notes}}</div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template let-application pTemplate="gridItem">
+                <div class="col-12 md:col-4">
+                    <div class="card m-3 border-1 surface-border">
+                        <div class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2">
+                            <div class="flex align-items-center">
+                                <span class="font-semibold">{{application.status}}</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-column align-items-center text-center mb-3">
+                            <div class="text-2xl font-bold">{{application.companyName}}</div>
+                            <div class="mb-3">{{application.jobTitle}}</div>
+                            <div class="mb-2">{{application.dateApplied | date}}</div>
+                            <div class="mb-2">{{application.notes}}</div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </p-dataView>
+    </div>
+</div>

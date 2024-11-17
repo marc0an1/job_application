@@ -15,33 +15,30 @@ import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { MyJobApplicationsComponent } from './demo/components/my-job-applications/my-job-applications.component'; // Import standalone component
-import { MyCalendarComponent } from './demo/components/my-calendar/my-calendar.component';
+import { MyCalendarComponent } from './demo/components/my-calendar/my-calendar.component'; // Ensure this path is correct and the file exists
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@NgModule({
-    declarations: [AppComponent, MyCalendarComponent, NotfoundComponent],
-    imports: [
-        AppRoutingModule, 
+@NgModule({ 
+    declarations: [
+        AppComponent, 
+        NotfoundComponent],
+    bootstrap: [AppComponent], imports: [AppRoutingModule,
         AppLayoutModule,
         FormsModule,
-        HttpClientModule,
         AppRoutingModule,
         CalendarModule, // Add CalendarModule to imports
         DropdownModule, // Add DropdownModule to imports
         InputGroupModule, // Add InputGroupModule to imports
         FullCalendarModule, // Add FullCalendarModule to imports
-        MyJobApplicationsComponent,
-    ],
-    providers: [
+        MyJobApplicationsComponent], providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService
-    ],
-    bootstrap: [AppComponent],
-})
+        PhotoService, ProductService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {}
