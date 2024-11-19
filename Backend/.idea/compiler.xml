@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="JobApplication-Microservice" />
+        <module name="CapstoneProject" />
+        <module name="Cloud-Gateway" />
+        <module name="Service-Registry" />
+        <module name="User-Microservice" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="CapstoneProject (1)" target="17" />
+      <module name="CapstoneProject (2)" target="17" />
+      <module name="Job-Application-Microservice" target="17" />
+      <module name="JobApplicationMicroservice" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="CapstoneProject" options="-parameters" />
+      <module name="CapstoneProject (1)" options="-parameters" />
+      <module name="CapstoneProject (2)" options="-parameters" />
+      <module name="Cloud-Gateway" options="-parameters" />
+      <module name="Job-Application-Microservice" options="-parameters" />
+      <module name="JobApplication-Microservice" options="-parameters" />
+      <module name="JobApplicationMicroservice" options="-parameters" />
+      <module name="Service-Registry" options="-parameters" />
+      <module name="User-Microservice" options="-parameters" />
+    </option>
+  </component>
+</project>

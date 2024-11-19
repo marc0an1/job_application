@@ -1,0 +1,39 @@
+server:
+  port: 8080  # The port for the API Gateway
+
+spring:
+  application:
+    name: api-gateway  # The name of the API Gateway
+
+  cloud:
+    gateway:
+      routes:
+        # Route for User-Microservice
+        - id: User-Microservice
+          uri: lb://user-microservice  # Ensure this matches the service name in Eureka
+          predicates:
+            - Path=/user/**  # Ensure this matches the endpoint path in the User-Microservice
+
+        # Route for Job-Service (if you have one)
+        - id: JobApplication-Microservice
+          uri: lb://JobApplication-Microservice  # Eureka service discovery (load-balanced)
+          predicates:
+            - Path=/jobApplication/**  # Any request starting with /job/ should be routed to job-service
+
+  eureka:
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/  # Eureka server URL
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
