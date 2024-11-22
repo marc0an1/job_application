@@ -1,159 +1,281 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CalendarModule } from 'primeng/calendar';
-import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { DataViewModule } from 'primeng/dataview';
-import { CommonModule } from '@angular/common'; // Import CommonModule
-
+import { JobApplicationService } from './my-job-application.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-my-job-applications',
-    standalone: true,
     templateUrl: './my-job-applications.component.html',
     styleUrls: ['./my-job-applications.component.scss'],
-    imports: [
-      CommonModule,
-      DialogModule,
-      DropdownModule,
-      CalendarModule,
-      FormsModule,
-      DataViewModule
-    ],
+    providers: [MessageService],
 })
 export class MyJobApplicationsComponent implements OnInit {
     displayDialog: boolean = false;
+    editing: boolean = false; // Tracks whether we are editing an existing application
     sortField: string = 'companyName'; // Default sort field
     sortOrder: number = 1; // 1 for ascending, -1 for descending
+    selectedStatus: string | null = null; // Stores the selected status
+    selectedDate: string | null = null; // Stores the selected date
+    searchQuery: string = ''; // Stores the search query
+    isConfirmToastVisible: boolean = false; // Tracks if the confirm toast is visible
 
     jobApplication = {
-      companyName: '',
-      jobTitle: '',
-      dateApplied: null,
-      status: null,
-      notes: ''
+        applicationID: null, // Include applicationID for editing
+        companyName: '',
+        jobTitle: '',
+        dateApplied: null,
+        status: null,
+        notes: ''
     };
 
-    statusOptions = [   
-      { name: 'Applied', code: 'Applied' },
-      { name: 'Interview Scheduled', code: 'Interview Scheduled' },
-      { name: 'Interview Completed', code: 'Interview Completed' },
-      { name: 'Offer Extended', code: 'Offer Extended' },
-      { name: 'Offer Accepted', code: 'Offer Accepted' },
-      { name: 'Offer Declined', code: 'Offer Declined' },
-      { name: 'Rejected', code: 'Rejected' }
+    statusOptions = [
+        { name: 'Applied', code: 'Applied' },
+        { name: 'Interview Scheduled', code: 'Interview Scheduled' },
+        { name: 'Interview Completed', code: 'Interview Completed' },
+        { name: 'Offer Extended', code: 'Offer Extended' },
+        { name: 'Offer Accepted', code: 'Offer Accepted' },
+        { name: 'Offer Declined', code: 'Offer Declined' },
+        { name: 'Rejected', code: 'Rejected' }
     ];
 
-    applications: any[] = [
-      { companyName: 'Company A', position: 'Developer', dateApplied: new Date('2023-10-01'), status: 'Pending', notes: 'Follow up next week' },
-      { companyName: 'Company B', position: 'Designer', dateApplied: new Date('2023-10-02'), status: 'Interview', notes: 'Prepare portfolio' }
-    ];
+    applications: any[] = [];
     filteredApplications: any[] = [];
     sortOptions: any[] = [
-      { label: 'Company Name', value: 'companyName' },
-      { label: 'Date Applied', value: 'dateApplied' },
-      { label: 'Status', value: 'status' }
+        { label: 'Company Name', value: 'companyName' },
+        { label: 'Date Applied', value: 'dateApplied' },
+        { label: 'Status', value: 'status' }
     ];
-    selectedSortOption: string;
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private jobApplicationService: JobApplicationService,
+        private messageService: MessageService
+    ) {}
 
     ngOnInit(): void {
-      this.filteredApplications = [...this.applications];
+        this.loadJobApplications(); // Fetch applications on load
     }
 
-    showDialog() {
-      this.displayDialog = true;
+    loadJobApplications(): void {
+        this.jobApplicationService.getJobApplications().subscribe(
+            (response) => {
+                console.log('Job applications fetched successfully:', response);
+                this.applications = response;
+                this.filteredApplications = [...this.applications];
+                console.log('Filtered Applications:', this.filteredApplications);
+            },
+            (error) => {
+                console.error('Error fetching job applications:', error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to load job applications. Please try again later.',
+                });
+            }
+        );
     }
 
-    // submitForm() {
-    //   this.applications.push({ ...this.jobApplication }); // Add the new application to applications array
-    //   this.filteredApplications = [...this.applications]; // Update filtered Applications to reflect new additions
-    //   this.displayDialog = false; // Close the dialog pane
+    showDialog(editing: boolean = false, application: any = null): void {
+        this.editing = editing;
 
-    //   // Reset form fields
-    //   this.jobApplication = {
-    //       companyName: '',
-    //       jobTitle: '',
-    //       dateApplied: null,
-    //       status: null,
-    //       notes: ''
-    //   };
-    // }
+        if (editing && application) {
+            // Populate form with selected application for editing
+            this.jobApplication = { ...application,
+                jobTitle: application.jobDescription, // Map backend field name to frontend form
+                dateApplied: application.dateApplied ? new Date(application.dateApplied) : null, // Ensure date format
+             };
+        } else {
+            // Reset the form for new job application
+            this.jobApplication = {
+                applicationID: null,
+                companyName: '',
+                jobTitle: '',
+                dateApplied: null,
+                status: null,
+                notes: ''
+            };
+        }
 
-    submitForm() {
-      const apiUrl = 'http://localhost:8081/jobApplication/createJobApplication';
-  
-      const jobApplication = {
-          companyName: this.jobApplication.companyName,
-          jobDescription: this.jobApplication.jobTitle,  // Ensure field name matches backend
-          dateApplied: this.jobApplication.dateApplied ? this.jobApplication.dateApplied.toISOString().split('T')[0] : null,
-          status: this.jobApplication.status,
-          notes: this.jobApplication.notes
-      };
+        this.displayDialog = true;
+    }
 
-      console.log('Submitting job application:', jobApplication);
-  
-      this.http.post(apiUrl, jobApplication).subscribe(
-          response => {
-              console.log('Job application submitted successfully:', response);
-              this.applications.push({ ...this.jobApplication });
-              this.filteredApplications = [...this.applications];
-              this.displayDialog = false;
-  
-              // Reset form fields
-              this.jobApplication = {
-                  companyName: '',
-                  jobTitle: '',
-                  dateApplied: null,
-                  status: null,
-                  notes: ''
-              };
-  
-              // Show success message to the user
-              alert('Job application submitted successfully!');
-          },
-          (error: HttpErrorResponse) => {
-              console.error('Error submitting job application:', error);
-  
-              // Display user-friendly messages based on status code or error type
-              if (error.status === 0) {
-                  // Network error or CORS issue
-                  alert('Network error: Please check your internet connection or CORS settings.');
-              } else if (error.status === 400) {
-                  // Bad request
-                  alert('Invalid data: Please check your form entries and try again.');
-              } else if (error.status === 401) {
-                  // Unauthorized (e.g., token expired or missing)
-                  alert('Unauthorized: Please log in again to continue.');
-              } else if (error.status === 403) {
-                  // Forbidden (e.g., insufficient permissions)
-                  alert('You do not have permission to perform this action.');
-              } else if (error.status === 404) {
-                  // Not Found (e.g., API endpoint doesn’t exist)
-                  alert('Server error: The requested resource could not be found.');
-              } else if (error.status === 500) {
-                  // Internal Server Error
-                  alert('Server error: Please try again later.');
-              } else {
-                  // Generic error message
-                  alert('An unexpected error occurred. Please try again.');
-              }
-          }
-      );
-  }
+    submitForm(): void {
+        const jobApplication = {
+            companyName: this.jobApplication.companyName,
+            jobDescription: this.jobApplication.jobTitle,
+            dateApplied: this.jobApplication.dateApplied
+                ? this.jobApplication.dateApplied.toISOString().split('T')[0]
+                : null,
+            status: this.jobApplication.status,
+            notes: this.jobApplication.notes
+        };
 
+        console.log('Submitting job application:', jobApplication);
 
+        this.jobApplicationService.createJobApplication(jobApplication).subscribe(
+            (response) => {
+                console.log('Job application submitted successfully:', response);
+
+                // Reload job applications
+                this.loadJobApplications();
+
+                // Close the dialog
+                this.displayDialog = false;
+
+                // Show success toast
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Job application submitted successfully!',
+                });
+            },
+            (error) => {
+                console.error('Error submitting job application:', error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to submit job application. Please try again.',
+                });
+            }
+        );
+    }
+
+    updateForm(): void {
+        const updatedApplication = {
+            applicationID: this.jobApplication.applicationID,
+            companyName: this.jobApplication.companyName,
+            jobDescription: this.jobApplication.jobTitle,
+            dateApplied: this.jobApplication.dateApplied
+                ? this.jobApplication.dateApplied.toISOString().split('T')[0]
+                : null,
+            status: this.jobApplication.status,
+            notes: this.jobApplication.notes
+        };
+
+        console.log('Updating job application:', updatedApplication);
+
+        this.jobApplicationService.updateJobApplication(updatedApplication).subscribe(
+            (response) => {
+                console.log('Job application updated successfully:', response);
+
+                // Reload job applications
+                this.loadJobApplications();
+
+                // Close the dialog
+                this.displayDialog = false;
+
+                // Show success toast
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Job application updated successfully!',
+                });
+            },
+            (error) => {
+                console.error('Error updating job application:', error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to update job application. Please try again.',
+                });
+            }
+        );
+    }
+
+    deleteApplication(): void {
+        if (!this.jobApplication.applicationID) {
+            return;
+        }
+    
+        this.messageService.clear(); // Clear previous messages
+        this.messageService.add({
+            key: 'confirmDelete',
+            severity: 'warn',
+            summary: 'Confirm Delete',
+            detail: 'Are you sure you want to delete this job application?',
+            sticky: true,
+        });
+    }
+
+    onConfirm(): void {
+        if (!this.jobApplication.applicationID) {
+            return;
+        }
+    
+        this.jobApplicationService.deleteJobApplication(this.jobApplication.applicationID).subscribe(
+            () => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Deleted',
+                    detail: 'Job application deleted successfully!',
+                });
+    
+                // Reload job applications
+                this.loadJobApplications();
+    
+                // Close the dialog
+                this.displayDialog = false;
+            },
+            (error) => {
+                console.error('Error deleting job application:', error);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to delete job application. Please try again later.',
+                });
+            }
+        );
+    
+        this.messageService.clear('confirmDelete'); // Clear the confirmation message
+    }
+    
+    onReject(): void {
+        this.messageService.clear('confirmDelete'); // Dismiss the confirmation message
+    }
+    
+    
+    
+
+    filterApplications(): void {
+        this.filteredApplications = this.applications.filter(application => {
+            const matchesSearch = this.searchQuery
+                ? application.companyName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                  application.jobDescription.toLowerCase().includes(this.searchQuery.toLowerCase())
+                : true;
+
+            const matchesStatus = this.selectedStatus
+                ? application.status === this.selectedStatus
+                : true;
+
+            const matchesDate = this.selectedDate
+                ? application.dateApplied === this.selectedDate
+                : true;
+
+            return matchesSearch && matchesStatus && matchesDate;
+        });
+    }
 
     onFilter(event: any): void {
-      const query = event.target.value.toLowerCase();
-      this.filteredApplications = this.applications.filter(application =>
-        application.companyName.toLowerCase().includes(query)
-      );
+        this.searchQuery = event.target.value;
+        this.filterApplications();
+    }
+
+    onStatusFilterChange(event: any): void {
+        this.selectedStatus = event.value;
+        this.filterApplications();
+    }
+
+    onDateFilterChange(event: any): void {
+        this.selectedDate = event ? event.toISOString().split('T')[0] : null;
+        this.filterApplications();
     }
 
     onSortChange(event: any): void {
-      this.sortField = event.value;
+        this.sortField = event.value;
     }
+
+    resetFilters(): void {
+        this.searchQuery = '';
+        this.selectedStatus = null;
+        this.selectedDate = null;
+        this.filteredApplications = [...this.applications]; // Reset filtered applications
+    }    
 }

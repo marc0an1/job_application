@@ -11,6 +11,10 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { DashboardsRoutingModule } from './dashboard-routing.module';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
+import { DataViewModule } from 'primeng/dataview';
+import { ToastModule } from 'primeng/toast'; // Import ToastModule
+
+
 
 @NgModule({
     imports: [
@@ -24,7 +28,9 @@ import { DropdownModule } from 'primeng/dropdown';
         ButtonModule,
         DashboardsRoutingModule,
         CalendarModule,
-        DropdownModule
+        DropdownModule,
+        DataViewModule,
+        ToastModule
     ],
     declarations: [DashboardComponent]
 })

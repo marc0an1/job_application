@@ -14,7 +14,8 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
-import { MyJobApplicationsComponent } from './demo/components/my-job-applications/my-job-applications.component'; // Import standalone component
+//import { MyJobApplicationsComponent } from './demo/components/my-job-applications/my-job-applications.component'; // Import standalone component
+import { MyJobApplicationsModule } from './demo/components/my-job-applications/my-job-applications.module'; // Adjust the path as needed
 import { MyCalendarComponent } from './demo/components/my-calendar/my-calendar.component'; // Ensure this path is correct and the file exists
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -34,7 +35,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
         DropdownModule, // Add DropdownModule to imports
         InputGroupModule, // Add InputGroupModule to imports
         FullCalendarModule, // Add FullCalendarModule to imports
-        MyJobApplicationsComponent], providers: [
+        MyJobApplicationsModule], providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         CountryService, CustomerService, EventService, IconService, NodeService,
