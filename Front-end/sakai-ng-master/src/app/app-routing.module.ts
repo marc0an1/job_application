@@ -29,7 +29,7 @@ import { MyCalendarComponent } from './demo/components/my-calendar/my-calendar.c
 // ];
 
 const routes: Routes = [
-  { path: '', redirectTo: '/auth/login', pathMatch: 'full' }, // Redirect context root to login
+  { path: '', redirectTo: '/landing', pathMatch: 'full' }, // Redirect context root to login
   { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
   { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
   {
