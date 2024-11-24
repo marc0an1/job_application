@@ -51,7 +51,7 @@
                     </div>
                     <div>
                         <label for="zipCode" class="block text-900 text-xl font-medium mb-2">Zip Code</label>
-                        <input id="zipCode" type="text" [(ngModel)]="zipCode" name="zipCode" placeholder="Zip Code" class="w-full md:w-30rem mb-5" style="padding:1rem" required />
+                        <input id="zipCode" type="text" [(ngModel)]="zipCode" name="zipCode" placeholder="Zip Code" class="w-full md:w-30rem mb-5" style="padding:1rem" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="9" />
                     </div>
                     <div>
                         <label for="country" class="block text-900 text-xl font-medium mb-2">Country</label>
@@ -59,7 +59,7 @@
                     </div>
                     <div>
                         <label for="phoneNumber" class="block text-900 text-xl font-medium mb-2">Phone Number</label>
-                        <input id="phoneNumber" type="number" [(ngModel)]="phoneNumber" name="phoneNumber" placeholder="Phone Number" class="w-full md:w-30rem mb-5" style="padding:1rem" required maxlength="10"/>
+                        <input id="phoneNumber" type="tel" [(ngModel)]="phoneNumber" name="phoneNumber" placeholder="Phone Number" class="w-full md:w-30rem mb-5" style="padding:1rem" required maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')"/>
                     </div>
 
                     <button pButton pRipple label="Signup" class="w-full p-3 text-xl" type="submit"></button>

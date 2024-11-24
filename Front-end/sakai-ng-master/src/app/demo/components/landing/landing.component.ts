@@ -10,4 +10,11 @@ export class LandingComponent {
 
     constructor(public layoutService: LayoutService, public router: Router) { }
     
+    navigateSignup(): void {
+        this.router.navigate(['/auth/signup']);
+    }
+
+    navigateLogin(): void {
+        this.router.navigate(['/auth/login']);
+    }
 }
