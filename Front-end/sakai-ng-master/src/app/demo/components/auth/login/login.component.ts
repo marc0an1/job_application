@@ -32,6 +32,15 @@ export class LoginComponent {
                 if(token){
                     sessionStorage.setItem('authToken',token);
                     console.log('Login Successful:', response);
+
+                    // Dispatch a custom event with the token
+                    const tokenEvent = new CustomEvent('authTokenAvailable', {
+                        detail: { token },
+                    });
+                    window.dispatchEvent(tokenEvent); // Dispatch the event
+                    console.log("Token event dispatched:", token);
+
+                    // Redirect the user to the dashboard                       
                     this.router.navigate(['/dashboard']);
                 }else{
                     console.error('no token received');

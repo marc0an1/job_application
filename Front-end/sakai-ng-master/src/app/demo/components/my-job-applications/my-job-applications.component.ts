@@ -14,7 +14,7 @@ export class MyJobApplicationsComponent implements OnInit {
     sortField: string = 'companyName'; // Default sort field
     sortOrder: number = 1; // 1 for ascending, -1 for descending
     selectedStatus: string | null = null; // Stores the selected status
-    selectedDate: string | null = null; // Stores the selected date
+    selectedDate: Date | null = null; // Stores the selected date
     searchQuery: string = ''; // Stores the search query
     isConfirmToastVisible: boolean = false; // Tracks if the confirm toast is visible
 
@@ -246,7 +246,7 @@ export class MyJobApplicationsComponent implements OnInit {
                 : true;
 
             const matchesDate = this.selectedDate
-                ? application.dateApplied === this.selectedDate
+                ? application.dateApplied === this.selectedDate.toISOString().split('T')[0]
                 : true;
 
             return matchesSearch && matchesStatus && matchesDate;
@@ -264,9 +264,9 @@ export class MyJobApplicationsComponent implements OnInit {
     }
 
     onDateFilterChange(event: any): void {
-        this.selectedDate = event ? event.toISOString().split('T')[0] : null;
+        this.selectedDate = event ? new Date(event) : null; // Convert Date to ISO string format
         this.filterApplications();
-    }
+    }    
 
     onSortChange(event: any): void {
         this.sortField = event.value;

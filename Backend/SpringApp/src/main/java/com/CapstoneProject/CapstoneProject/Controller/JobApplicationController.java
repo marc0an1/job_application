@@ -36,6 +36,23 @@ public class JobApplicationController {
         return service.updateJobApplication(jobApplication.getApplicationID(), jobApplication.getCompanyName(), jobApplication.getJobDescription(), jobApplication.getDateApplied(), jobApplication.getStatus(), jobApplication.getNotes());
     }
 
+//    @PostMapping("/scrapeJobApplication")
+//    public ResponseEntity<JobApplication> scrapeJobApplication(@RequestBody JobApplication jobApplication) {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String username = authentication.getName(); // Get username from token
+//
+//        return service.createJobApplication(
+//                username,
+//                jobApplication.getCompanyName(),
+//                jobApplication.getJobDescription(),
+//                jobApplication.getDateApplied(),
+//                jobApplication.getStatus(),
+//                jobApplication.getNotes()
+//        );
+//    }
+
+
+
     @DeleteMapping("/deleteJobApplication")
     public ResponseEntity<JobApplication> deleteJobApplication(@RequestBody JobApplication jobApplication) {
         return service.deleteJobApplication(jobApplication.getApplicationID());

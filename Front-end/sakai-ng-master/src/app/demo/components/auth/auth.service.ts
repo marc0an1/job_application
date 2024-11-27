@@ -11,17 +11,37 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  // constructor(private http: HttpClient) {
+  //   // Safely check if the Chrome runtime is available
+  //   if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
+  //     chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  //       if (message.action === 'getAuthToken') {
+  //         const token = this.getToken();
+  //         sendResponse({ token }); // Respond with the token
+  //       }
+  //     });
+  //   } else {
+  //     console.warn("Chrome runtime is not available in this environment.");
+  //   }
+  // }
+
   // Method to log in the user
   login(credentials: { username: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/verify`, credentials, {responseType: 'text'}).pipe(
+    return this.http.post(`${this.apiUrl}/verify`, credentials, { responseType: 'text' }).pipe(
       tap((response: string) => {
         const token = response; // token sent as plain text
         if (token) {
-          sessionStorage.setItem('authToken', token); // Store the token in sessionStorage
+          sessionStorage.setItem('authToken', token);
+
+          // Notify the Chrome extension about the login
+          if (chrome.runtime && chrome.runtime.sendMessage) {
+            chrome.runtime.sendMessage({ action: 'setAuthToken', token });
+          }
         }
       })
     );
   }
+
 
   // Method to log out the user
   logout(): void {
@@ -52,6 +72,7 @@ export class AuthService {
     return this.http.get('YOUR_PROTECTED_API_ENDPOINT', { headers });
   }
 }
+
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
