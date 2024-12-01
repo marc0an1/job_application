@@ -1,64 +1,57 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { Product } from '../../api/product';
-import { ProductService } from '../../service/product.service';
-import { Subscription, debounceTime } from 'rxjs';
-import { LayoutService } from 'src/app/layout/service/app.layout.service';
-
-import { HttpClient } from '@angular/common/http';
-
+import { Component } from '@angular/core';
 
 @Component({
+    selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent {
+    filterOptions: any[] = [{ label: 'All', value: null }];
+    selectedFilter: any;
+    expandedSection: string | null = null;
 
-    items: MenuItem[]; // Define the items property
+    defaultStyle = `
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 250px;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    `;
 
-    ngOnInit() {
-        this.items = [
-        { label: 'Update', icon: 'pi pi-refresh', command: () => { this.update(); } },
-        { label: 'Delete', icon: 'pi pi-times', command: () => { this.delete(); } },
-        { label: 'Angular.io', icon: 'pi pi-info', url: 'http://angular.io' },
-        { label: 'Setup', icon: 'pi pi-cog', routerLink: ['/setup'] }
-        ];
+    expandedStyle = `
+        border: 1px solid #ccc;
+        padding: 40px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 30px);
+        width: calc(100vw - 30px);
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #fff;
+        z-index: 1000;
+        cursor: auto;
+        transition: all 0.3s ease;
+    `;
+
+    toggleExpand(section: string) {
+        if (this.expandedSection === section) {
+            this.expandedSection = null;
+        } else {
+            this.expandedSection = section;
+        }
     }
 
-    update() {
-        console.log('Update clicked');
-    }
-
-    delete() {
-        console.log('Delete clicked');
-    }
-
-    jobApplication = {
-        companyName: '',
-        jobTitle: '',
-        dateApplied: '',
-        status: null,
-        notes: ''
-    };
-
-    statusOptions = [   
-        { name: 'Applied', code: 'Applied' },
-        { name: 'Interview Scheduled', code: 'Interview Scheduled' },
-        { name: 'Interview Completed', code: 'Interview Completed' },
-        { name: 'Offer Extended', code: 'Offer Extended' },
-        { name: 'Offer Accepted', code: 'Offer Accepted' },
-        { name: 'Offer Declined', code: 'Offer Declined' },
-        { name: 'Rejected', code: 'Rejected' }
-    ];
-
-    constructor(private http: HttpClient) {}
-
-    onSubmit() {
-        const apiUrl = 'http://localhost:8080/api/job-applications'; //TODO: replace with actual backend API URL
-        this.http.post(apiUrl, this.jobApplication).subscribe(response => {
-            console.log('Job application submitted successfully', response);
-            // TODO: optionally, reset the form or show a success message
-        }, error => {
-            console.error('Error submitting job application', error);
-        });
+    minimizeSection(event: Event) {
+        event.stopPropagation(); // Prevent the click from triggering toggleExpand
+        this.expandedSection = null;
     }
 }

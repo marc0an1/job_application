@@ -1,96 +1,87 @@
-<div class="grid">
-    <!-- <div class="col-12">
-        <div class="p-inputgroup">
-            <span class="p-input-icon-left">
-                <i class="pi pi-search"></i>
-                <input type="text" pInputText placeholder="Search">
-            </span>
-            <p-dropdown [options]="filterOptions" [(ngModel)]="selectedFilter"></p-dropdown>
-        </div>
-    </div> -->
-
-    <div class="col-12 xl:col-6">
-		<div class="card">
-			<h5>Job Application Submission Form</h5>
-			<div class="p-fluid p-formgrid grid">
-				<div class="field col-12">
-					<label htmlFor="companyName">Company Name</label>
-                    <span class="p-float-label">
-                        <input id="float-input" type="text" pInputText style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
-                    </span>
-				</div>
-				<div class="field col-12">
-					<label htmlFor="jobTitle">Job Title</label>
-					<span class="p-float-label">
-                        <input id="float-input" type="text" pInputText style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
-                    </span>
-				</div>
-				<div class="field col-12">
-					<label htmlFor="dateApplied">Date Applied</label>
-					<p-calendar [showIcon]="true" inputId="icon"></p-calendar>
-				</div>
-
-				<div class="field col-12">
-					<label htmlFor="status">Status</label>
-					<!-- <input pInputText id="status" type="text" /> -->
-                    <p-dropdown [options]="statusOptions" optionLabel="name" [(ngModel)]="jobApplication.status" placeholder="Select a status"></p-dropdown>
-				</div>
-				<div class="field col-12 ">
-					<label htmlFor="notes">Notes</label>
-                    <span class="p-float-label">
-                        <input id="float-input" type="text" pInputText style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
-                    </span>
-				</div>
-                <div class="flex flex-wrap gap-2">
-                    <button pButton pRipple label="Submit"></button>
-                </div>
-			</div>
-		</div>
-	</div>
-
-    <div class="card">
-        <div class="flex align-items-center justify-content-between mb-4">
-            <h5>Notifications</h5>
-            <div>
-                <button pButton type="button" icon="pi pi-ellipsis-v" class="p-button-rounded p-button-text p-button-plain" (click)="menu.toggle($event)"></button>
-                <p-menu #menu [popup]="true" [model]="items"></p-menu>
-            </div>
-        </div>
-
-        <span class="block text-600 font-medium mb-3">TODAY</span>
-        <ul class="p-0 mx-0 mt-0 mb-4 list-none">
-            <li class="flex align-items-center py-2 border-bottom-1 surface-border">
-                <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-blue-100 border-circle mr-3 flex-shrink-0">
-                    <i class="pi pi-dollar text-xl text-blue-500"></i>
-                </div>
-                <span class="text-900 line-height-3">Richard Jones
-            <span class="text-700"> has purchased a blue t-shirt for <span class="text-blue-500">79$</span></span>
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 20px;">
+    <!-- Search and Filter Bar -->
+    <div style="grid-column: span 2; margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+        <span>
+            <i class="pi pi-search" style="font-size: 1.5rem; margin-right: 8px;"></i>
         </span>
-            </li>
-            <li class="flex align-items-center py-2">
-                <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-orange-100 border-circle mr-3 flex-shrink-0">
-                    <i class="pi pi-download text-xl text-orange-500"></i>
-                </div>
-                <span class="text-700 line-height-3">Your request for withdrawal of <span class="text-blue-500 font-medium">2500$</span> has been initiated.</span>
-            </li>
-        </ul>
+        <input
+            type="text"
+            pInputText
+            placeholder="Search for job applications..."
+            style="flex: 1; padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px;"
+        />
+        <p-dropdown
+            [options]="filterOptions"
+            [(ngModel)]="selectedFilter"
+            style="width: 200px;"
+        ></p-dropdown>
+    </div>
 
-        <span class="block text-600 font-medium mb-3">YESTERDAY</span>
-        <ul class="p-0 m-0 list-none">
-            <li class="flex align-items-center py-2 border-bottom-1 surface-border">
-                <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-blue-100 border-circle mr-3 flex-shrink-0">
-                    <i class="pi pi-dollar text-xl text-blue-500"></i>
-                </div>
-                <span class="text-blue-500 line-height-3" >Google 
-            <span class="text-700"> Recruiter has extended a job offer. <span class="text-blue-500">Reply now</span></span>
-        </span>
-            </li>
-            <li class="flex align-items-center py-2 border-bottom-1 surface-border">
-                <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-pink-100 border-circle mr-3 flex-shrink-0">
-                    <i class="pi pi-question text-xl text-pink-500"></i>
-                </div>
-                <span class="text-900 line-height-3">Jane Davis from <span class="text-blue-500">Honeywell</span><span class="text-700"> has messaged you about a job posting.</span></span>
-            </li>
-        </ul>
+    <!-- Overview Statistics -->
+    <div
+        *ngIf="!expandedSection || expandedSection === 'overview'"
+        (click)="toggleExpand('overview')"
+        [style]="expandedSection === 'overview' ? expandedStyle : defaultStyle"
+    >
+        <h5 style="margin-bottom: 20px;">Overview Statistics</h5>
+        <p style="text-align: center; color: gray;">Placeholder for overview statistics</p>
+        <button
+            *ngIf="expandedSection === 'overview'"
+            (click)="minimizeSection($event)"
+            style="margin-top: 20px;"
+        >
+            Minimize
+        </button>
+    </div>
+
+    <!-- Recent Activities -->
+    <div
+        *ngIf="!expandedSection || expandedSection === 'activities'"
+        (click)="toggleExpand('activities')"
+        [style]="expandedSection === 'activities' ? expandedStyle : defaultStyle"
+    >
+        <h5 style="margin-bottom: 20px;">Recent Activities</h5>
+        <p style="text-align: center; color: gray;">Placeholder for recent activities</p>
+        <button
+            *ngIf="expandedSection === 'activities'"
+            (click)="minimizeSection($event)"
+            style="margin-top: 20px;"
+        >
+            Minimize
+        </button>
+    </div>
+
+    <!-- Quick Actions -->
+    <div
+        *ngIf="!expandedSection || expandedSection === 'actions'"
+        (click)="toggleExpand('actions')"
+        [style]="expandedSection === 'actions' ? expandedStyle : defaultStyle"
+    >
+        <h5 style="margin-bottom: 20px;">Quick Actions</h5>
+        <p style="text-align: center; color: gray;">Placeholder for quick actions</p>
+        <button
+            *ngIf="expandedSection === 'actions'"
+            (click)="minimizeSection($event)"
+            style="margin-top: 20px;"
+        >
+            Minimize
+        </button>
+    </div>
+
+    <!-- Calendar Snapshot -->
+    <div
+        *ngIf="!expandedSection || expandedSection === 'calendar'"
+        (click)="toggleExpand('calendar')"
+        [style]="expandedSection === 'calendar' ? expandedStyle : defaultStyle"
+    >
+        <h5 style="margin-bottom: 20px;">Calendar Snapshot</h5>
+        <p style="text-align: center; color: gray;">Placeholder for calendar snapshot</p>
+        <button
+            *ngIf="expandedSection === 'calendar'"
+            (click)="minimizeSection($event)"
+            style="margin-top: 20px;"
+        >
+            Minimize
+        </button>
     </div>
 </div>
