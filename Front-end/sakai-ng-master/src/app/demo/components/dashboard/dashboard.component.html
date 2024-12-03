@@ -17,39 +17,143 @@
         ></p-dropdown>
     </div>
 
-    <!-- Overview Statistics -->
-    <div
-        *ngIf="!expandedSection || expandedSection === 'overview'"
-        (click)="toggleExpand('overview')"
-        [style]="expandedSection === 'overview' ? expandedStyle : defaultStyle"
-    >
-        <h5 style="margin-bottom: 20px;">Overview Statistics</h5>
-        <p style="text-align: center; color: gray;">Placeholder for overview statistics</p>
+
+    
+<!-- Overview Statistics -->
+<div [style]="expandedSection === 'overview' ? expandedStyle : defaultStyle">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <h5 [style.fontSize]="expandedSection === 'overview' ? '1.5rem' : '1rem'" style="margin: 0;">
+            Overview Statistics
+        </h5>
         <button
-            *ngIf="expandedSection === 'overview'"
-            (click)="minimizeSection($event)"
-            style="margin-top: 20px;"
+            (click)="toggleExpand('overview', $event)"
+            style="background: none; border: none; cursor: pointer; font-size: 1.2rem;"
         >
-            Minimize
+            <i
+                [ngClass]="expandedSection === 'overview' ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"
+            ></i>
         </button>
     </div>
+    <div
+        style="display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start; width: 100%; margin-top: 20px;"
+    >
+        <!-- Chart Section -->
+        <div
+            style="flex: 1; display: flex; justify-content: center; align-items: center; padding-right: 10px;"
+            [style]="{
+                width: expandedSection === 'overview' ? '300px' : '150px',
+                height: expandedSection === 'overview' ? '300px' : '150px'
+            }"
+        >       
+            <p-chart
+                [type]="'pie'"
+                [data]="pieChartData"
+                [options]="chartOptions"
+                [style]="{
+                    width: '100%',
+                    height: '100%'
+                }"
+            ></p-chart>
+        </div>
+
+        <!-- Statistics Section -->
+        <div style="flex: 1; padding-left: 20px;">
+            <p style="margin: 0;">
+                <strong>Total Applications:</strong> {{ statistics.totalApplications }}
+            </p>
+            <ul style="list-style: none; padding: 0; margin: 10px 0 0 0;">
+                <li *ngFor="let legend of legendData" style="display: flex; align-items: center; margin-bottom: 5px;">
+                    <div
+                        [style]="{
+                            width: '15px',
+                            height: '15px',
+                            backgroundColor: legend.color,
+                            marginRight: '10px'
+                        }"
+                    ></div>
+                    <span style="font-size: 0.9rem;">
+                        <strong>{{ legend.label }}:</strong> {{ statistics.statuses[legend.label] || 0 }}
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 
     <!-- Recent Activities -->
     <div
-        *ngIf="!expandedSection || expandedSection === 'activities'"
-        (click)="toggleExpand('activities')"
-        [style]="expandedSection === 'activities' ? expandedStyle : defaultStyle"
+        [style]="expandedSection === 'recentActivities' ? expandedStyle : defaultStyle"
     >
-        <h5 style="margin-bottom: 20px;">Recent Activities</h5>
-        <p style="text-align: center; color: gray;">Placeholder for recent activities</p>
-        <button
-            *ngIf="expandedSection === 'activities'"
-            (click)="minimizeSection($event)"
-            style="margin-top: 20px;"
-        >
-            Minimize
-        </button>
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <h5 style="margin: 0;">Recent Activities</h5>
+            <button
+                (click)="toggleExpand('recentActivities', $event)"
+                style="background: none; border: none; cursor: pointer; font-size: 1.2rem;"
+            >
+                <i
+                    [ngClass]="expandedSection === 'recentActivities' ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"
+                ></i>
+            </button>
+        </div>
+        <div style="margin-top: 20px; overflow-y: auto; width: 100%; height: 100%;">
+            <!-- Latest Applications -->
+            <div>
+                <h6 style="margin-bottom: 10px;">Latest Applications Added</h6>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li
+                        *ngFor="let app of recentActivities.latestApplications"
+                        style="padding: 5px; border-bottom: 1px solid #ddd;"
+                    >
+                        <strong>{{ app.jobTitle }}</strong> at <strong>{{ app.companyName }}</strong>
+                        <span style="font-size: 0.8rem; color: gray;">
+                            ({{ formatTimestamp(app.dateApplied) }})
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Recent Status Updates -->
+            <div style="margin-top: 20px;">
+                <h6 style="margin-bottom: 10px;">Recent Status Updates</h6>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li
+                        *ngFor="let update of recentActivities.recentStatusUpdates"
+                        style="padding: 5px; border-bottom: 1px solid #ddd;"
+                    >
+                        <strong>{{ update.jobTitle }}</strong> at <strong>{{ update.companyName }}</strong>
+                        <span style="font-size: 0.8rem; color: gray;"> - {{ update.status }}</span>
+                        <span style="font-size: 0.8rem; color: gray;">
+                            ({{ formatTimestamp(update.statusUpdatedDate) }})
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Notifications -->
+            <div style="margin-top: 20px;">
+                <h6 style="margin-bottom: 10px;">Notifications</h6>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li
+                        *ngFor="let notification of recentActivities.notifications"
+                        style="padding: 5px; border-bottom: 1px solid #ddd;"
+                    >
+                        <p style="margin: 0;">{{ notification.message }}</p>
+                        <span style="font-size: 0.8rem; color: gray;">
+                            ({{ formatTimestamp(notification.timestamp) }})
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
+
 
     <!-- Quick Actions -->
     <div

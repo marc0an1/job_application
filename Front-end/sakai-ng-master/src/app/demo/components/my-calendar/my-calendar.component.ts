@@ -5,34 +5,59 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 @Component({
   selector: 'app-my-calendar',
-  // standalone: true,
-  // imports: [],
   templateUrl: './my-calendar.component.html',
   styleUrl: './my-calendar.component.scss'
 })
 export class MyCalendarComponent implements OnInit {
   calendarOptions: CalendarOptions;
+  displayDialog: boolean = false; // Controls the visibility of the dialog
+  eventFormData: any = { title: '', category: '', date: '' }; // Holds form data
+  selectedEvent: any = { title: '', category: '', date: '' }; // Stores the event being edited
+  eventCategories: any[] = [
+    { name: 'Interview', value: 'interview' },
+    { name: 'Info Session', value: 'infoSession' },
+    { name: 'Offer Due Date', value: 'offerDueDate' },
+  ]; // Dropdown options
+
+  events: any[] = []; // Store events
 
   ngOnInit() {
     this.calendarOptions = {
-      initialView: 'dayGridMonth',
-      dateClick: this.handleDateClick.bind(this), // bind is important!
-      events: [
-        // Example events for now
-        { title: 'event 1', date: '2021-06-01' },
-        { title: 'event 2', date: '2021-06-02' }
-      ]
-      
-    }
+      plugins: [dayGridPlugin, interactionPlugin],
+      initialView: 'dayGridMonth', // Default view
+      editable: true, // Allows dragging and dropping
+      selectable: true, // Enables date selection
+      selectMirror: true,
+      dateClick: this.handleDateClick.bind(this), // Bind to component context
+      events: [], // Placeholder for events
+    };
+    
+  }
+  // Handle Date Click
+  handleDateClick(arg: any) {
+    this.eventFormData.date = arg.dateStr; // Pre-fill the date in the dialog
+    this.displayDialog = true; // Show the dialog
   }
 
-  handleDateClick(arg) {
-    const title = prompt('Enter event title:');
-    if(title) {
-      this.calendarOptions.events = [
-        ...(this.calendarOptions.events as any[]),
-        { title, date: arg.dateStr}
-      ];
-    }
+  // Save Event
+  saveEvent() {
+    const newEvent = {
+      title: this.eventFormData.title,
+      start: this.eventFormData.date,
+      extendedProps: {
+        category: this.eventFormData.category, // Store the category
+      },
+    };
+    this.events.push(newEvent); // Add the new event to the calendar
+    this.calendarOptions.events = [...this.events]; // Update calendar events
+    this.closeDialog(); // Close the dialog
   }
+
+  // Close Dialog
+  closeDialog() {
+    this.displayDialog = false;
+    this.eventFormData = { title: '', category: '', date: '' }; // Reset form
+  }
+
+  
 }

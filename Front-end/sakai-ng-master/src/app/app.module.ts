@@ -22,6 +22,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { DialogModule } from 'primeng/dialog';
+//import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+
 
 @NgModule({ 
     declarations: [
@@ -33,6 +38,9 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
         AppRoutingModule,
         CalendarModule, // Add CalendarModule to imports
         DropdownModule, // Add DropdownModule to imports
+        InputTextModule, // Add InputTextModule to imports
+        DialogModule,
+        ButtonModule,
         InputGroupModule, // Add InputGroupModule to imports
         FullCalendarModule, // Add FullCalendarModule to imports
         MyJobApplicationsModule], providers: [
