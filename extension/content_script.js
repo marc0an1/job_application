@@ -13,13 +13,27 @@ window.addEventListener("authTokenAvailable", (event) => {
 
 // Scrape job posting data from the job website
 function scrapeJobPosting() {
-    const rawJobTitle = document.querySelector(".jobsearch-JobInfoHeader-title-container")?.innerText || "No title found";
-    const jobDescription = rawJobTitle.split("\n")[0].trim(); // Keep only the first part and trim whitespace
-    //const jobTitle = document.querySelector(".jobsearch-JobInfoHeader-title-container")?.innerText || "No title found";
+    let jobDescription = "Unknown Job Title";
+    let companyName = "Unknown Company";
+    let notes = "Scraped from LinkedIn";
 
-    const companyNameElement = document.querySelector("[data-company-name='true'] a");
-    const rawCompanyName = companyNameElement ? companyNameElement.innerText : "No company found";
-    const companyName = rawCompanyName.split("\n")[0].trim(); // Keep only the first part and trim whitespace
+    if(window.location.href.includes("linkedin.com")) {
+        jobDescription = document.querySelector("h3.base-search-card__title")?.innerText.trim() || "Unknown Job Title";
+        companyName = document.querySelector("a.hidden-nested-link")?.innerText.trim() || "Unknown Company";
+        notes = "Scraped from LinkedIn";
+    } else if (window.location.href.includes("indeed.com")) {
+        console.log("Scraping Indeed job posting...");
+        rawJobTitle = document.querySelector(".jobsearch-JobInfoHeader-title-container")?.innerText || "Unknown Job Title";
+        jobDescription = rawJobTitle.split("\n")[0].trim(); // Keep only the first part and trim whitespace
+        companyNameElement = document.querySelector("[data-company-name='true'] a");
+        rawCompanyName = companyNameElement ? companyNameElement.innerText : "No company found";
+        companyName = rawCompanyName.split("\n")[0].trim(); // Keep only the first part and trim whitespace
+    }
+
+
+    // const companyNameElement = document.querySelector("[data-company-name='true'] a");
+    // const rawCompanyName = companyNameElement ? companyNameElement.innerText : "No company found";
+    // const companyName = rawCompanyName.split("\n")[0].trim(); // Keep only the first part and trim whitespace
     // const companyNameElement = document.querySelector("[data-company-name='true'] a");
     // const companyName = companyNameElement ? companyNameElement.innerText : "No company found";
 
@@ -28,7 +42,7 @@ function scrapeJobPosting() {
         jobDescription,
         dateApplied: new Date().toISOString().split("T")[0], // Add current date
         status: "Applied", // Default status
-        notes: "Scraped from Indeed",
+        notes,
     };
 
     console.log("Scraped Job Data:", scrapedData); // Log the scraped data to the console

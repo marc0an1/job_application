@@ -12,6 +12,7 @@
     },
     "host_permissions": [
       "*://*.indeed.com/*",
+      "*://*.linkedin.com/*",
       "http://localhost/*"
     ],
     "action": {
@@ -27,7 +28,7 @@
     },
     "content_scripts": [
       {
-        "matches": ["*://*.indeed.com/*", "http://localhost/*"],
+        "matches": ["*://*.indeed.com/*", "*://*.linkedin.com/*", "http://localhost/*"],
         "js": ["content_script.js"]
       }
     ]
