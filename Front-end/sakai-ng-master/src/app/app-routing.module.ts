@@ -12,8 +12,8 @@ const routes: Routes = [
     path: '', component: AppLayoutComponent,
     children: [
       { path: 'dashboard', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule), canActivate: [AuthGuard] },
-      { path: 'my-job-applications', loadChildren: () => import('./demo/components/my-job-applications/my-job-applications.module').then(m => m.MyJobApplicationsModule) },
-      { path: 'my-calendar', loadChildren: () => import('./demo/components/my-calendar/my-calendar.module').then(m => m.MyCalendarModule) },
+      { path: 'my-job-applications', loadChildren: () => import('./demo/components/my-job-applications/my-job-applications.module').then(m => m.MyJobApplicationsModule), canActivate: [AuthGuard] },
+      { path: 'my-calendar', loadChildren: () => import('./demo/components/my-calendar/my-calendar.module').then(m => m.MyCalendarModule), canActivate: [AuthGuard] },
       { path: 'edit-user', loadChildren: () => import('./demo/components/edit-user/edit-user.module').then(m => m.EditUserModule), canActivate: [AuthGuard] }, // New route for Edit User
       { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule), canActivate: [AuthGuard] },
       { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule), canActivate: [AuthGuard] },

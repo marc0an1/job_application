@@ -49,8 +49,8 @@ export class AppTopBarComponent {
     // Logout the user
     logout() {
         this.closeDropdown();
-        localStorage.removeItem('authToken'); // Clear the token or session
-        this.router.navigate(['/login']); // Adjust the route as needed
+        sessionStorage.removeItem('authToken'); // Clear the token or session
+        this.router.navigate(['/auth/login']); // Adjust the route as needed
     }
 
     // Listen for clicks anywhere on the document
