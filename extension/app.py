@@ -36,7 +36,7 @@ def scrape_job_application():
 
 def scrape_job_application_logic(received_data):
     company_name = received_data.get("companyName", "Unknown Company")
-    job_description = received_data.get("jobTitle", "Unknown Job Title")
+    job_description = received_data.get("jobDescription", "Unknown Job Title")
     date_applied = received_data.get("dateApplied", "2024-01-01")
     status = received_data.get("status", "Applied")
     notes = received_data.get("notes", "")

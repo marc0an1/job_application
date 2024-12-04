@@ -42,7 +42,7 @@ document.getElementById("save-job").addEventListener("click", () => {
                         // Only include fields that the Spring backend expects
                         body: JSON.stringify({
                             companyName: scrapedData.companyName,
-                            jobDescription: scrapedData.jobTitle,
+                            jobDescription: scrapedData.jobDescription,
                             dateApplied: scrapedData.dateApplied,
                             status: scrapedData.status,
                             notes: scrapedData.notes,
