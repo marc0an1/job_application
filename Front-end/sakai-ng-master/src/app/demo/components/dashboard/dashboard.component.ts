@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { JobApplicationService } from '../my-job-applications/my-job-application.service';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router'; // Import Router
+
 
 @Component({
     selector: 'app-dashboard',
@@ -9,6 +12,7 @@ export class DashboardComponent implements OnInit {
     filterOptions: any[] = [{ label: 'All', value: null }];
     selectedFilter: any;
     expandedSection: string | null = null;
+    upcomingEvents: any[] = []; // For Calendar Snapshot
 
     statistics: any = null;
     isLoading: boolean = true; // To show a loading indicator while fetching data
@@ -21,11 +25,19 @@ export class DashboardComponent implements OnInit {
     isLoadingActivities: boolean = true;
     legendData: any[] = []; // Added legendData property
 
+    eventCategoryMap: { [key: string]: string } = {
+        interview: 'Interview',
+        infoSession: 'Info Session',
+        offerDueDate: 'Offer Due Date',
+    };
+    
 
-    constructor(private jobApplicationService: JobApplicationService) {}
+
+    constructor(private jobApplicationService: JobApplicationService, private http: HttpClient, private router: Router) {}
 
     ngOnInit(): void {
         this.loadJobApplicationsAndCalculateStatistics();
+        this.loadUpcomingEvents();
         this.chartOptions = {
             plugins: {
                 legend: {
@@ -90,10 +102,6 @@ export class DashboardComponent implements OnInit {
         }));
     }
 
-    toggleChartType(): void {
-        this.currentChartType = this.currentChartType === 'pie' ? 'doughnut' : 'pie';
-        console.log('Current Chart Type:', this.currentChartType); // Debugging
-    }
 
     calculateStatistics(applications: any[]): void {
         const totalApplications = applications.length;
@@ -164,6 +172,22 @@ export class DashboardComponent implements OnInit {
         overflow: hidden;
     `;
 
+     // ---------- Methods for Quick Actions Section ----------
+      // Navigation methods for Quick Actions
+    navigateToAddApplication(): void {
+        this.router.navigate(['/my-job-applications'], {
+            queryParams: { openForm: true }, // Add query param to trigger form
+        });
+    }
+
+    navigateToJobApplications(): void {
+        this.router.navigate(['/my-job-applications']);
+    }
+
+    navigateToCalendar(): void {
+        this.router.navigate(['/my-calendar']);
+    }
+
 
     // ---------- Methods for Recent Activities Section ----------
 
@@ -175,33 +199,8 @@ export class DashboardComponent implements OnInit {
             return dateB - dateA; // Latest first
         });
 
-        // Latest Applications (Top 5 recent ones)
-        this.recentActivities.latestApplications = sortedApplications.slice(0, 5);
-
-        // Recent Status Updates (Applications with status changes)
-        this.recentActivities.recentStatusUpdates = this.applications
-            .filter((app) => app.statusUpdatedDate) // Ensure there's a status update date
-            .sort((a, b) => {
-                const dateA = new Date(a.statusUpdatedDate).getTime();
-                const dateB = new Date(b.statusUpdatedDate).getTime();
-                return dateB - dateA; // Latest first
-            })
-            .slice(0, 5); // Limit to top 5 updates
-
-        // Notifications (e.g., upcoming deadlines or interviews)
-        const now = new Date();
-        this.recentActivities.notifications = this.applications
-            .filter((app) => app.interviewDate && new Date(app.interviewDate) > now) // Filter future events
-            .map((app) => ({
-                message: `Interview with ${app.companyName} on ${new Date(app.interviewDate).toLocaleDateString()}`,
-                timestamp: app.interviewDate,
-            }))
-            .sort((a, b) => {
-                const dateA = new Date(a.timestamp).getTime();
-                const dateB = new Date(b.timestamp).getTime();
-                return dateA - dateB; // Upcoming first
-            })
-            .slice(0, 5); // Limit to top 5 notifications
+        // Latest Applications (Top 15 recent ones)
+        this.recentActivities.latestApplications = sortedApplications.slice(0, 15);
     }
 
     formatTimestamp(timestamp: string): string {
@@ -231,10 +230,26 @@ export class DashboardComponent implements OnInit {
         }
     }
     
+    loadUpcomingEvents(): void {
+        this.http.get<any[]>('http://localhost:8081/event/getEvents').subscribe(
+          (events) => {
+            const today = new Date();
+            this.upcomingEvents = events
+              .filter((event) => new Date(event.eventDate) >= today) // Filter future events
+              .sort((a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime()) // Sort by date
+              .slice(0, 5); // Limit to 5 events
+          },
+          (error) => {
+            console.error('Error loading events:', error);
+          }
+        );
+    }
 
     minimizeSection(section: string, event: Event) {
         event.stopPropagation(); // Prevent the click from triggering toggleExpand
         //this.expandedSection = null;
         this.expandedSection = this.expandedSection === section ? null : section;
     }
+
+    
 }

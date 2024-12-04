@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { JobApplicationService } from './my-job-application.service';
 import { MessageService } from 'primeng/api';
+import { ActivatedRoute } from '@angular/router'; // Import ActivatedRoute
+
 
 @Component({
     selector: 'app-my-job-applications',
@@ -47,11 +49,19 @@ export class MyJobApplicationsComponent implements OnInit {
 
     constructor(
         private jobApplicationService: JobApplicationService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private route: ActivatedRoute // Inject ActivatedRoute
     ) {}
 
     ngOnInit(): void {
         this.loadJobApplications(); // Fetch applications on load
+
+        // Listen for query parameters to trigger actions
+        this.route.queryParams.subscribe((params) => {
+            if (params['openForm']) {
+                this.showDialog(false); // Open the form for adding a new application
+            }
+        });
     }
 
     loadJobApplications(): void {

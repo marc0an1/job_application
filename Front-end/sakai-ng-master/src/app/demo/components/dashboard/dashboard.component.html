@@ -118,74 +118,94 @@
                     </li>
                 </ul>
             </div>
-
-            <!-- Recent Status Updates -->
-            <div style="margin-top: 20px;">
-                <h6 style="margin-bottom: 10px;">Recent Status Updates</h6>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li
-                        *ngFor="let update of recentActivities.recentStatusUpdates"
-                        style="padding: 5px; border-bottom: 1px solid #ddd;"
-                    >
-                        <strong>{{ update.jobTitle }}</strong> at <strong>{{ update.companyName }}</strong>
-                        <span style="font-size: 0.8rem; color: gray;"> - {{ update.status }}</span>
-                        <span style="font-size: 0.8rem; color: gray;">
-                            ({{ formatTimestamp(update.statusUpdatedDate) }})
-                        </span>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Notifications -->
-            <div style="margin-top: 20px;">
-                <h6 style="margin-bottom: 10px;">Notifications</h6>
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li
-                        *ngFor="let notification of recentActivities.notifications"
-                        style="padding: 5px; border-bottom: 1px solid #ddd;"
-                    >
-                        <p style="margin: 0;">{{ notification.message }}</p>
-                        <span style="font-size: 0.8rem; color: gray;">
-                            ({{ formatTimestamp(notification.timestamp) }})
-                        </span>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 
 
     <!-- Quick Actions -->
     <div
-        *ngIf="!expandedSection || expandedSection === 'actions'"
-        (click)="toggleExpand('actions')"
-        [style]="expandedSection === 'actions' ? expandedStyle : defaultStyle"
+    *ngIf="!expandedSection || expandedSection === 'actions'"
+    (click)="toggleExpand('actions')"
+    [style]="expandedSection === 'actions' ? expandedStyle : defaultStyle"
     >
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
         <h5 style="margin-bottom: 20px;">Quick Actions</h5>
-        <p style="text-align: center; color: gray;">Placeholder for quick actions</p>
         <button
             *ngIf="expandedSection === 'actions'"
             (click)="minimizeSection($event)"
-            style="margin-top: 20px;"
+            style="background: none; border: none; cursor: pointer; font-size: 1.2rem;"
         >
-            Minimize
+            <i
+                [ngClass]="expandedSection === 'actions' ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"
+            ></i>
         </button>
     </div>
 
-    <!-- Calendar Snapshot -->
-    <div
-        *ngIf="!expandedSection || expandedSection === 'calendar'"
-        (click)="toggleExpand('calendar')"
-        [style]="expandedSection === 'calendar' ? expandedStyle : defaultStyle"
-    >
-        <h5 style="margin-bottom: 20px;">Calendar Snapshot</h5>
-        <p style="text-align: center; color: gray;">Placeholder for calendar snapshot</p>
+    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 15px;">
+        <!-- Add New Application -->
         <button
-            *ngIf="expandedSection === 'calendar'"
-            (click)="minimizeSection($event)"
-            style="margin-top: 20px;"
-        >
-            Minimize
-        </button>
+            pButton
+            label="Add New Application"
+            class="p-button-success"
+            (click)="navigateToAddApplication()"
+            style="width: 100%;"
+        ></button>
+
+        <!-- Update Application Status -->
+        <button
+            pButton
+            label="Update Application Status"
+            class="p-button-primary"
+            (click)="navigateToJobApplications()"
+            style="width: 100%;"
+        ></button>
+
+        <!-- Schedule an Interview -->
+        <button
+            pButton
+            label="Schedule an Interview"
+            class="p-button-info"
+            (click)="navigateToCalendar()"
+            style="width: 100%;"
+        ></button>
     </div>
+    </div>
+
+
+
+    <!-- Calendar Snapshot -->
+    <div [style]="expandedSection === 'calendar' ? expandedStyle : defaultStyle">
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <h5 style="margin: 0;">Calendar Snapshot</h5>
+        <button
+            (click)="toggleExpand('calendar', $event)"
+            style="background: none; border: none; cursor: pointer; font-size: 1.2rem;"
+        >
+            <i
+            [ngClass]="expandedSection === 'calendar' ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"
+            ></i>
+        </button>
+        </div>
+        <div style="margin-top: 20px; overflow-y: auto; width: 100%; height: 100%;">
+        <ul style="list-style: none; padding: 0; margin: 0;">
+            <li
+            *ngFor="let event of upcomingEvents"
+            style="padding: 10px; border-bottom: 1px solid #ddd;"
+            >
+            <strong>{{ event.eventTitle }}</strong>
+            <span style="font-size: 0.8rem; color: gray;">
+                ({{ event.eventDate | date: 'mediumDate' }})
+            </span>
+            <p style="margin: 5px 0 0 0; font-size: 0.8rem; color: #555;">
+                {{ eventCategoryMap[event.eventCategory] || event.eventCategory }}
+            </p>  
+            </li>
+        </ul>
+        <p *ngIf="upcomingEvents.length === 0" style="text-align: center; color: gray;">
+            No upcoming events.
+        </p>
+        </div>
+    </div>
+  
+
 </div>

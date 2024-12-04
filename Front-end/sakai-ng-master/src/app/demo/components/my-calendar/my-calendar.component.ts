@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
+import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { EventService } from './event.service'; // Import the EventService
 
 @Component({
   selector: 'app-my-calendar',
   templateUrl: './my-calendar.component.html',
-  styleUrl: './my-calendar.component.scss'
+  styleUrls: ['./my-calendar.component.scss'],
 })
 export class MyCalendarComponent implements OnInit {
   calendarOptions: CalendarOptions;
@@ -18,46 +19,71 @@ export class MyCalendarComponent implements OnInit {
     { name: 'Info Session', value: 'infoSession' },
     { name: 'Offer Due Date', value: 'offerDueDate' },
   ]; // Dropdown options
-
   events: any[] = []; // Store events
 
+  constructor(private eventService: EventService) {}
+
   ngOnInit() {
+    this.fetchEvents();
+
     this.calendarOptions = {
       plugins: [dayGridPlugin, interactionPlugin],
-      initialView: 'dayGridMonth', // Default view
-      editable: true, // Allows dragging and dropping
-      selectable: true, // Enables date selection
-      selectMirror: true,
-      dateClick: this.handleDateClick.bind(this), // Bind to component context
+      initialView: 'dayGridMonth',
+      editable: true,
+      selectable: true,
+      dateClick: this.handleDateClick.bind(this),
       events: [], // Placeholder for events
     };
-    
-  }
-  // Handle Date Click
-  handleDateClick(arg: any) {
-    this.eventFormData.date = arg.dateStr; // Pre-fill the date in the dialog
-    this.displayDialog = true; // Show the dialog
   }
 
-  // Save Event
+  fetchEvents() {
+    this.eventService.getEvents().subscribe(
+      (events) => {
+        this.events = events.map((event) => ({
+          id: event.eventID,
+          title: event.eventTitle,
+          start: event.eventDate,
+          extendedProps: { category: event.eventCategory },
+        }));
+        this.calendarOptions.events = [...this.events];
+      },
+      (error) => {
+        console.error('Failed to fetch events:', error);
+      }
+    );
+  }
+
+  handleDateClick(arg: any) {
+    this.eventFormData.date = arg.dateStr;
+    this.displayDialog = true;
+  }
+
   saveEvent() {
     const newEvent = {
-      title: this.eventFormData.title,
-      start: this.eventFormData.date,
-      extendedProps: {
-        category: this.eventFormData.category, // Store the category
-      },
+      eventTitle: this.eventFormData.title,
+      eventCategory: this.eventFormData.category,
+      eventDate: this.eventFormData.date,
     };
-    this.events.push(newEvent); // Add the new event to the calendar
-    this.calendarOptions.events = [...this.events]; // Update calendar events
-    this.closeDialog(); // Close the dialog
+
+    this.eventService.createEvent(newEvent).subscribe(
+      (savedEvent) => {
+        this.events.push({
+          id: savedEvent.eventID,
+          title: savedEvent.eventTitle,
+          start: savedEvent.eventDate,
+          extendedProps: { category: savedEvent.eventCategory },
+        });
+        this.calendarOptions.events = [...this.events];
+        this.closeDialog();
+      },
+      (error) => {
+        console.error('Failed to save event:', error);
+      }
+    );
   }
 
-  // Close Dialog
   closeDialog() {
     this.displayDialog = false;
-    this.eventFormData = { title: '', category: '', date: '' }; // Reset form
+    this.eventFormData = { title: '', category: '', date: '' };
   }
-
-  
 }
