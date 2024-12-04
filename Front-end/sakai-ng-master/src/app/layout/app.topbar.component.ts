@@ -1,12 +1,8 @@
-import { Component, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, ElementRef, ViewChild, Input, HostListener } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { LayoutService } from "./service/app.layout.service";
+import { LayoutService } from './service/app.layout.service';
 import { MenuService } from './app.menu.service';
-
-
-//import { Component, Input } from '@angular/core';
-//import { LayoutService } from '../service/app.layout.service';
-//import { MenuService } from './app.menu.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-topbar',
@@ -15,6 +11,7 @@ import { MenuService } from './app.menu.service';
 export class AppTopBarComponent {
 
     items!: MenuItem[];
+    displayDropdown: boolean = false; // Controls dropdown visibility
 
     @ViewChild('menubutton') menuButton!: ElementRef;
 
@@ -22,17 +19,45 @@ export class AppTopBarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    //constructor(public layoutService: LayoutService) { }
-
-
     @Input() minimal: boolean = false;
 
     scales: number[] = [12, 13, 14, 15, 16];
 
     constructor(
         public layoutService: LayoutService,
-        public menuService: MenuService
+        public menuService: MenuService,
+        private router: Router
     ) {}
+
+    // Toggles the dropdown menu
+    toggleDropdown(event: Event) {
+        event.stopPropagation();
+        this.displayDropdown = !this.displayDropdown;
+    }
+
+    // Close the dropdown menu
+    closeDropdown() {
+        this.displayDropdown = false;
+    }
+
+    // Navigate to the Edit User page
+    navigateToEditUser() {
+        this.closeDropdown();
+        this.router.navigate(['/edit-user']); // Adjust the route as needed
+    }
+
+    // Logout the user
+    logout() {
+        this.closeDropdown();
+        localStorage.removeItem('authToken'); // Clear the token or session
+        this.router.navigate(['/login']); // Adjust the route as needed
+    }
+
+    // Listen for clicks anywhere on the document
+    @HostListener('document:click', ['$event'])
+    onDocumentClick() {
+        this.closeDropdown();
+    }
 
     get visible(): boolean {
         return this.layoutService.state.configSidebarVisible;

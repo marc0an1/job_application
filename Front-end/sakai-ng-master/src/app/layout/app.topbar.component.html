@@ -17,10 +17,47 @@
             <i class="pi pi-calendar"></i>
             <span>Calendar</span>
         </button>
-        <button class="p-link layout-topbar-button">
+
+
+        <!-- <button class="p-link layout-topbar-button">
             <i class="pi pi-user"></i>
             <span>Profile</span>
-        </button>
+        </button> -->
+        <div style="position: relative;">
+            <button 
+              class="p-link layout-topbar-button" 
+              style="display: flex; align-items: center; gap: 5px; cursor: pointer;" 
+              (click)="toggleDropdown($event)"
+            >
+              <i class="pi pi-user"></i>
+              <span>Profile</span>
+            </button>
+          
+            <!-- Dropdown Menu -->
+            <div 
+              *ngIf="displayDropdown" 
+              style="position: absolute; top: 40px; right: 0; background: white; border: 1px solid #ccc; border-radius: 5px; width: 150px; z-index: 1000; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);"
+              (click)="$event.stopPropagation()" 
+            >
+              <button 
+                style="display: block; width: 100%; padding: 10px; text-align: left; background: none; border: none; cursor: pointer;" 
+                (click)="navigateToEditUser()"
+              >
+                Edit User
+              </button>
+              <button 
+                style="display: block; width: 100%; padding: 10px; text-align: left; background: none; border: none; color: red; cursor: pointer;" 
+                (click)="logout()"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+                
+        
+
+
+
         <button class="p-link layout-topbar-button" type="button" (click)="onConfigButtonClick()">
             <i class="pi pi-cog"></i>
             <span>Settings</span>
