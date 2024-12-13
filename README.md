@@ -4,6 +4,14 @@ Project Overview
   
   Purpose: The main goal is to streamline job-seeking efforts by consolidating application tracking, status updates, and scheduling into a single, easy-to-use platform.
 
+Directory Structure
+=
+
+The project is organized as follows:
+
+Code
+
+
 Technologies and Tools
 = 
   1. Front-End:
@@ -17,13 +25,58 @@ Technologies and Tools
      - MySQL
      - MySQL Workbench
   4. Chrome Extension:
-     - BeautifulSoup
-     - Flask
+     - BeautifulSoup (for web scraping algorithm)
+     - Flask (to serve as backend for chrome extension)
   5. Other Tools:
      - Postman for API testing
      - JWT for authentication
   6. Version Control:
      - Git and Github
+    
+Installation Guide
+=
+  1. Clone the Repository:
+          complete this****
+  2. Set up Database
+         complete this****
+
+  4. Install Requirements
+         complete this****
+  5. Front-End Setup:
+     Navigate to the front-end directory:
+         complete this****
+  6. Back-End Setup
+         complete this****
+
+User Manual
+=
+- Login and Registration
+  * Login: Use your registered credentials to access the dashboard.
+  * Register: Create a new account by filling in the required fields.
+
+- Dashboard
+  * View and overview of job applications, recent activities, and upcoming events.
+
+- MyJobApplications
+  * Add new job applications by clicking on the "Add Job Application" button.
+  * Edit or delete existing applications.
+ 
+- Calendar
+  * View scheduled events and upcoming intervies.
+  * Add, edit, or delete events directly from the calendar.
+
+- Edit User
+  * Update personal information, including first name, last name, email, and phone number.
+  * Change your password securely.
+ 
+- Chrome Extension
+  * CLick on the Extensions icon in Chrome and then click on Manage Extensions.
+  * Click on the `Developer Mode` toggle bar, then click on load unpacked.
+  * Select the folder 'extension' from the capstoneAngular folder downloaded after cloning the repository.
+  * Login to the dashboard once or twice until the extension is able to recognize that you are logged in.
+  * Go to Indeed or Linkedin without logging in and select a job posting.
+  * Click on the extension and click on the 'Save Job' button, you should receive a "Job application saved successfully" message pop up if it worked. 
+  * Go back to the My Job Applications page in the website and check if the job application has been added to the list of job applications associated with your account.
 
 Features
 =
@@ -40,29 +93,6 @@ Features
   5. Secure Authentication:
      - User login and session management with JWT.
 
-Setup and Installation Instructions
-=
-  1. Clone the Repository:
-          complete this****
-  2. Set up Database
-         complete this****
-
-  4. Install Requirements
-         complete this****
-  5. Front-End Setup:
-     Navigate to the front-end directory:
-         complete this****
-  6. Back-End Setup
-         complete this****
-
-Usage
-= 
-  1. Users can:
-     - Add new job applications using the job applicaiton form in the My Job Applications page or the Main Dashboard page.
-     - Update application statuses or delete old applications.
-     - Schedule interviews or events directly on the calendar through the My Calendar page.
-     - View recent activities, including recently added applications or status updates.
-     - Access the Chrome extension to scrape job details from supported websites.
 
 API Endpoints
 =
@@ -92,6 +122,10 @@ Contributors
 
 Future Enhancements
 =
+THESE ARE SOME SAMPLE ENHANCEMENTS, NEED TO ADD ALL THE ACTUAL ENHANCEMENTS***
+* Implement notifications for upcoming interviews and deadlines.
+* Add an analytics page to provide insights into job application progress.
+* Mobile responsiveness and progressive web app (PWA) support.
 
 
 Known Issues
