@@ -165,7 +165,7 @@ Contributors
 
 * Nicolas Astros (@nicolitoo)
 * Marco Chaparro ()
-* Martin Archila ()
+* Martin Archila (@MartinArchila)
 * Alejandro Morales ()
 
 Future Enhancements
