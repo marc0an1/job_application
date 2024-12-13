@@ -15,7 +15,7 @@ window.addEventListener("authTokenAvailable", (event) => {
 function scrapeJobPosting() {
     let jobDescription = "Unknown Job Title";
     let companyName = "Unknown Company";
-    let notes = "Scraped from LinkedIn";
+    let notes = "Scraped from Indeed";
 
     if(window.location.href.includes("linkedin.com")) {
         jobDescription = document.querySelector("h3.base-search-card__title")?.innerText.trim() || "Unknown Job Title";
