@@ -83,7 +83,7 @@ Installation Guide
          
          - For "spring.datasource.password" and "spring.datasource.username", you'll want to change those to the username and password that you set for the database.
 
-      - After you've edited the "application.properties" file, open a **<u>seperate</u>** new Terminal aside from the one you used to launch the Frontend. Once open, you'll have to cd into the SpringApp directory using this command:
+      - After you've edited the "application.properties" file, open a **SEPARATE** new Terminal aside from the one you used to launch the Frontend. Once open, you'll have to cd into the SpringApp directory using this command:
 
          ```
           cd .\Backend\SpringApp\
