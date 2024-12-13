@@ -1,1 +1,72 @@
-<p>edit-user works!</p>
+<div class="p-fluid p-formgrid grid" style="padding: 20px; max-width: 600px; margin: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px; background: #fff;">
+    <h3 style="text-align: center; margin-bottom: 20px;">Edit User Information</h3>
+
+    <!-- First Name -->
+    <div class="field col-12">
+        <label for="firstName">First Name</label>
+        <span class="p-float-label">
+            <input id="firstName" type="text" pInputText formControlName="firstName" style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
+        </span>
+    </div>
+
+    <!-- Last Name -->
+    <div class="field col-12">
+        <label for="lastName">Last Name</label>
+        <span class="p-float-label">
+            <input id="lastName" type="text" pInputText formControlName="lastName" style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
+        </span>
+    </div>
+
+    <!-- Email -->
+    <div class="field col-12">
+        <label for="email">Email</label>
+        <span class="p-float-label">
+            <input id="email" type="email" pInputText formControlName="email" style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
+        </span>
+    </div>
+
+    <!-- Address -->
+    <div class="field col-12">
+        <label for="address">Address</label>
+        <span class="p-float-label">
+            <input id="address" type="text" pInputText formControlName="address" style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
+        </span>
+    </div>
+
+    <!-- Phone Number -->
+    <div class="field col-12">
+        <label for="phoneNumber">Phone Number</label>
+        <span class="p-float-label">
+            <input id="phoneNumber" type="text" pInputText formControlName="phoneNumber" style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
+        </span>
+    </div>
+
+    <!-- Update Button -->
+    <div class="field col-12" style="text-align: center;">
+        <button pButton pRipple label="Update Info" class="p-button-success" (click)="updateUser()" style="width: 100%; padding: 10px; font-size: 1rem;"></button>
+    </div>
+
+    <!-- Password Update Section -->
+    <h3 style="text-align: center; margin-top: 30px; margin-bottom: 20px;">Update Password</h3>
+
+    <!-- New Password -->
+    <div class="field col-12">
+        <label for="password">New Password</label>
+        <span class="p-float-label">
+            <input id="password" type="password" pInputText formControlName="password" style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
+        </span>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="field col-12">
+        <label for="confirmPassword">Confirm Password</label>
+        <span class="p-float-label">
+            <input id="confirmPassword" type="password" pInputText formControlName="confirmPassword" style="width: 100%; padding: .5rem; font-size: 1.2rem; box-sizing: border-box;">
+        </span>
+    </div>
+
+    <!-- Update Password Button -->
+    <div class="field col-12" style="text-align: center;">
+        <button pButton pRipple label="Update Password" class="p-button-warning" (click)="updatePassword()" style="width: 100%; padding: 10px; font-size: 1rem;"></button>
+    </div>
+</div>
