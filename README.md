@@ -36,17 +36,44 @@ Technologies and Tools
 Installation Guide
 =
   1. Clone the Repository:
-          complete this****
+      - To clone the repository, simply click the green "Code" button at the top of the page and select your desired method.
+
   2. Set up Database
          complete this****
 
   4. Install Requirements
-         complete this****
+      - Once cloned, go to the project and opern up a new Terminal so you can cd to the Frontend with the following command: 
+         * cd .\Front-end\sakai-ng-master\
+
+      - Once you've successfully inside that directory, run this command:
+         * npm install
+
+      - That command will install "npm" which is necessary for the projects Frontend to run. The Backend should not require any excess installation.
+
   5. Front-End Setup:
      Navigate to the front-end directory:
-         complete this****
+      - to launch the Frontend, simply open a new Terminal and use this command:
+         * cd .\Front-end\sakai-ng-master\
+      - Once inside the directory, copy and paste the command below:
+         * ng serve
+      - That command will run the backend, but in order for the application to work properly, you'll need to have the backend running first.
+
   6. Back-End Setup
-         complete this****
+      - Before you launch the Backend, you'll want to change the information in the application.properties file. This file can be found here:
+         * Backend > SpringApp > src > main > resources
+
+      - Once in the file, you'll see some of the fields have a commented out duplicate below them, thats meant for an example of what should be changed. 
+         - For "spring.datasource.url:", you'll need to replcae "capstone" we the name of the database that you've set. If you set it to run at a different port other thatn "3306", you'll have to change that number as well.
+         
+         - For "spring.datasource.password" and "spring.datasource.username", you'll want to change those to the username and password that you set for the database.
+
+      - After you've edited the "application.properties" file, open a *seperate* new Terminal aside from the one you used to launch the Frontend. Once open, you'll have to cd into the SpringApp directory using this command:
+         * cd .\Backend\SpringApp\
+      
+      - Once you're inside this directory, you can run the command below to launch the Springboot backend:
+         * mvn spring-boot:run
+
+      - Once that's done you'll be set to test the application.
 
 User Manual
 =
