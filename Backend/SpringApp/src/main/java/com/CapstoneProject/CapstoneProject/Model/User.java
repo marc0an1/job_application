@@ -28,9 +28,8 @@ public class User {
     private Address address; // Create the address object(street, city, state, zipcode)
     // private File Define how to store the resume if it is going to be as pdf, maybe as an object.
     @Column(name = "phone_number")
-    private Long phoneNumber; // maybe add multiple phones number (In a list or different ones)
+    private Long phoneNumber;
 
-    //Resumen pdf?, object experience, education.
     public User(String username, String password, String firstName, String lastName, String email, Address address, Long phoneNumber) {
         this.username = username;
         this.password = password;
@@ -63,6 +62,23 @@ public class User {
 
     public User(String username){
         this.username = username;
+    }
+
+    public User(String firstName, String lastName, String email, Address address, Long phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public User(String username, String firstName, String lastName, String email, Address address, Long phoneNumber) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
     }
 
     public int getUserID() {

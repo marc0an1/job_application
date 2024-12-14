@@ -26,13 +26,13 @@ public class UserController {
     @PutMapping ("/updateUser/")  // not actualized method
     public ResponseEntity<User> updateUser(@RequestBody User user)
     {
-        return service.updateUser(user.getUserID(), user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getAddress(), user.getPhoneNumber());
+        return service.updateUserInfo(user.getFirstName(), user.getLastName(), user.getEmail(), user.getAddress(), user.getPhoneNumber());
 
     }
 
-    @DeleteMapping ("/deleteUser/{id}") // not actualized method
-        public ResponseEntity<User> deleteUser(@PathVariable int id){
-            return service.deleteUser(id);
+    @DeleteMapping ("/deleteUser/")
+        public ResponseEntity<User> deleteUser(){
+            return service.deleteUser();
     }
 
     @PostMapping("/verify")

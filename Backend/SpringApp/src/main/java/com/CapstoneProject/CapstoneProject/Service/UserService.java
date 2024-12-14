@@ -67,19 +67,20 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.CREATED).header("Success", "User has been created").body(user);
     }
 
-    public ResponseEntity<User> updateUser(int id, // Not actualized method, bcs the user info might be implemented in the resume object
-                                           String username,
-                                           String password,
-                                           String firstName,
+    public ResponseEntity<User> updateUserInfo(String firstName,
                                            String lastName,
                                            String email,
                                            Address address,
                                            Long phoneNumber)
     {
-        User user = new User(id, username, password, firstName, lastName, email, address, phoneNumber);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = new User(username, firstName, lastName, email, address, phoneNumber);
 
-        if(!userRepo.existsById(id))
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).header("Error", "Id not found").body(user);
+        Optional<User> usernameExists = Optional.ofNullable(userRepo.findByUsername(username));
+
+        if(usernameExists.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).header("Error", "username not found").body(user);
 
         userRepo.save(user);
 
@@ -101,8 +102,10 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.OK).header("Success", "Password has been modified").body(user);
     }
 
-    public ResponseEntity<User> deleteUser(int id){
-        userRepo.deleteById(id);
+    public ResponseEntity<User> deleteUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        userRepo.deleteByUsername(username);
 
         return ResponseEntity.status(HttpStatus.OK).header("Success", "User has been deleted").body(new User());
     }
