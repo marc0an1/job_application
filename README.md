@@ -41,11 +41,22 @@ Installation Guide
 
   2. Set up Database
 
-         complete this****
+      - To set up the database a path should be specified in the application properties and the following lane of code should be changed
+      according to necessities:
+
+         ```
+            spring.jpa.hibernate.ddl-auto=none
+         ```
+
+         - If this configuration is set the none the hibernate module will not attempt to change or verify the database.
+         - If this configuration is set to Update the hibernate module will update any existing schema to match the current mapings (It will only add new tables columns
+         if they dont exist. But wont make any change to existing data)
+         - If this configuration is set to create the hibernate module will drop the existing schema and create a new one with the specified mapings.
+         - If this configuration is set to validate the hibernate module will throw an error if the existing schema does not match the mappings.
 
   4. Install Requirements
 
-      - Once cloned, go to the project and opern up a new Terminal so you can cd to the Frontend with the following command: 
+      - Once cloned, go to the project and open up a new Terminal, so you can cd to the Frontend with the following command: 
          
          ```
          cd .\Front-end\sakai-ng-master\
@@ -165,7 +176,7 @@ Contributors
 
 * Nicolas Astros (@nicolitoo)
 * Marco Chaparro ()
-* Martin Archila (@MartinArchila)
+* Martin Archila ()
 * Alejandro Morales ()
 
 Future Enhancements
