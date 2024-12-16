@@ -1,0 +1,52 @@
+statement to create the addres table
+
+CREATE TABLE `address` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `street` varchar(255) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `state` varchar(45) DEFAULT NULL,
+  `zipcode` int DEFAULT NULL,
+  `Country` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+statement to create the user table
+
+CREATE TABLE `user` (
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(45) DEFAULT NULL,
+  `password` text NOT NULL,
+  `first_name` varchar(45) DEFAULT NULL,
+  `last_name` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `address_id` int DEFAULT NULL,
+  `phone_number` bigint DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  KEY `address_id_idx` (`address_id`),
+  CONSTRAINT `address_id` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+statement to create the job_application table
+
+CREATE TABLE `job_application` (
+  `application_id` int NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(45) DEFAULT NULL,
+  `company_name` varchar(45) DEFAULT NULL,
+  `job_description` varchar(45) DEFAULT NULL,
+  `date_applied` varchar(45) DEFAULT NULL,
+  `status` varchar(45) DEFAULT NULL,
+  `notes` text,
+  UNIQUE KEY `application_id_UNIQUE` (`application_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+statement to create the event table
+
+CREATE TABLE `event` (
+  `event_id` int NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(45) NOT NULL,
+  `event_title` varchar(45) DEFAULT NULL,
+  `event_category` varchar(45) DEFAULT NULL,
+  `event_date` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`event_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
