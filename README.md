@@ -9,6 +9,7 @@ Directory Structure
 
 Below is the breakdown of the project's directory structure and its components:
 
+<pre>
 CAPSTONEANGULAR/
 │
 ├── .venv/                  # Virtual environment for Python dependencies
@@ -40,6 +41,9 @@ CAPSTONEANGULAR/
 │   │
 │   ├── README.md           # Documentation and usage instructions
 │   └── requirements.txt    # Python dependencies (if applicable)
+
+
+</pre>
 
 
 
