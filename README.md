@@ -7,9 +7,40 @@ Project Overview
 Directory Structure
 =
 
-The project is organized as follows:
+Below is the breakdown of the project's directory structure and its components:
 
-Code
+CAPSTONEANGULAR/
+│
+├── .venv/                  # Virtual environment for Python dependencies
+│
+├── job_application/        # Root project directory
+│   ├── .vscode/            # VS Code workspace and settings
+│   ├── Additional Documents/  
+│   │   └── ...             # Any supplementary documents or references  
+│   ├── Backend/            # Contains all backend code (Spring Boot)
+│   │   ├── src/            # Java source code files
+│   │   ├── pom.xml         # Maven configuration file for dependencies
+│   │   └── application.properties # Backend configuration (database, server port, etc.)
+│   │
+│   ├── Database/           # SQL schema and data for the project
+│   │   ├── schema.sql      # SQL script to create tables and seed data
+│   │   └── ...             # Any additional SQL scripts
+│   │
+│   ├── extension/          # Chrome extension codebase
+│   │   ├── manifest.json   # Configuration file for Chrome extensions
+│   │   ├── popup.html      # HTML file for the extension popup
+│   │   ├── popup.js        # JavaScript functionality for the extension
+│   │   └── styles.css      # CSS styling for the extension
+│   │
+│   ├── Front-end/          # Angular frontend code
+│   │   ├── src/            # Frontend source code (components, services, routing)
+│   │   ├── angular.json    # Angular project configuration file
+│   │   ├── package.json    # Node.js project dependencies
+│   │   └── index.html      # Main entry point for the frontend
+│   │
+│   ├── README.md           # Documentation and usage instructions
+│   └── requirements.txt    # Python dependencies (if applicable)
+
 
 
 Technologies and Tools
@@ -175,9 +206,9 @@ Contributors
 = 
 
 * Nicolas Astros (@nicolitoo)
-* Marco Chaparro ()
-* Martin Archila ()
-* Alejandro Morales ()
+* Marco Chaparro (@marc0an1)
+* Martin Archila (@MartinArchila)
+* Alejandro Morales (@AlejandroMorales0)
 
 Future Enhancements
 =
@@ -186,9 +217,6 @@ THESE ARE SOME SAMPLE ENHANCEMENTS, NEED TO ADD ALL THE ACTUAL ENHANCEMENTS***
 * Add an analytics page to provide insights into job application progress.
 * Mobile responsiveness and progressive web app (PWA) support.
 
-
-Known Issues
-=
      
        
     
