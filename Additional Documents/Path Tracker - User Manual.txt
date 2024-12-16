@@ -1,0 +1,220 @@
+User Manual for PathTracker
+Capstone Project – PathTracker (Job Application Tracker)
+
+Table of Contents
+1. Introduction
+2. System Requirements
+3. Getting Started
+4. Key Features
+a. Dashboard Overview
+b. Managing Job Applications
+c. Managing Events in the Calendar
+d. Editing User Information
+5. Using the Application
+a. Submitting a New Job Application
+b. Updating Application Status
+c. Scheduling Calendar Events
+d. Editing User Information and Password
+6. Chrome Extension Guide
+7. Troubleshooting
+8. Contact Information
+
+1. Introduction
+The Job Application Tracker with Calendar Integration is a full-stack web
+application designed to help users efficiently manage job applications, track their
+statuses, and schedule related events such as interviews or offer due dates.
+
+2. System Requirements
+Before using the application, ensure your system meets the following
+requirements:
+Frontend Requirements:
+• Browser: Latest versions of Chrome, Firefox, or Edge
+• Angular CLI: Version 13 or later
+• Node.js: Version 14.x or higher
+Backend Requirements:
+• Java JDK 11+
+• Spring Boot Framework
+• MySQL Server: Version 8.0+
+
+3. Getting Started
+To access and use the application:
+1. Launch the Application:
+a. Open a browser and navigate to http://localhost:3000 (Frontend).
+b. The backend server runs on http://localhost:8081.
+2. Login:
+a. Use your username and password to log in.
+b. If you do not have an account, you can register and create an account
+in the register page.
+
+4. Key Features
+Dashboard Overview
+• View a snapshot of upcoming events and job application statuses.
+• Access Quick Actions to quickly add a job application, update status, or
+schedule an interview.
+Managing Job Applications
+• Add new job applications, including details like Company Name, Job
+Title, Date Applied, Status, and Notes.
+• Update the status of existing applications.
+• View recent applications and filter by status, date, or search query.
+Managing Events in the Calendar
+• Schedule events related to job applications (e.g., Interviews, Info Sessions,
+or Offer Deadlines).
+• View events in a monthly calendar view.
+• Update or delete events by clicking on them.
+Editing User Information
+• Edit personal information such as First Name, Last Name, Email, Address,
+and Phone Number.
+• Update the password securely.
+
+5. Using the Application
+Submitting a New Job Application
+1. Access the Job Applications Page:
+Navigate to "My Job Applications" from the navigation bar.
+
+2. Click "Add Job Application":
+A form will appear.
+3. Fill in the Details:
+a. Company Name
+b. Job Title
+c. Date Applied
+d. Status (select from dropdown)
+e. Notes
+4. Submit:
+Click "Submit" to save the job application.
+
+Updating Application Status
+1. Go to My Job Applications.
+2. Locate the application you want to update.
+3. Click on it to edit details.
+4. Update the status or any other information.
+5. Click "Update" to save changes.
+
+Scheduling Calendar Events
+1. Go to "My Calendar".
+2. Click on a Date:
+A form will appear to add an event.
+3. Fill in the Event Details:
+a. Event Title
+b. Category (e.g., Interview, Info Session, Offer Due Date)
+c. Event Date (pre-selected).
+4. Save Event:
+Click "Save".
+To edit or delete an event:
+• Click on the event in the calendar and choose "Update" or "Delete".
+
+Editing User Information and Password
+1. Access the "Edit User" Page:
+Navigate to "Edit Profile" from the navigation bar.
+2. Edit User Information:
+a. Modify fields such as First Name, Last Name, Email, Address, and
+Phone Number.
+b. Click "Submit Changes" to save updates.
+3. Update Password:
+a. Enter a new password in the "New Password" field.
+b. Confirm the password in the "Confirm Password" field.
+c. Click "Update Password".
+d. You will see a confirmation message if successful.
+
+6. Chrome Extension Guide
+The Chrome Extension enhances the application by allowing users to quickly add
+job postings directly from their browser.
+Installation Steps:
+1. Download the Chrome Extension files (Extension/ folder).
+2. Open Chrome and navigate to chrome://extensions/.
+3. Enable Developer Mode in the top-right corner.
+4. Click Load unpacked and select the downloaded Extension folder.
+5. The extension will appear in the Chrome toolbar.
+6. Make sure to be logged into the main dashboard in the same chrome session
+for the extension to be able to save the job application to the desired account.
+How to Use the Chrome Extension:
+1. Navigate to a job posting on Indeed or LinkedIn (without logging in to
+either).
+
+2. Click the Job Tracker Extension icon.
+3. A “Save job” popup will appear and to save the current job posting just click
+it.
+4. If the job posting was saved successfully, you will receive a message and the
+job application will be automatically added into the my job application
+pages.
+
+7. Troubleshooting
+1. Unable to Load User Information
+• Ensure the backend server is running.
+• Verify the /user/details endpoint returns proper data.
+2. Password Not Updating
+• Ensure the "New Password" and "Confirm Password" fields match.
+• Check the network console for errors.
+3. Events Not Displaying in Calendar
+• Verify that events are saved in the database and returned via the backend.
+• Check browser developer tools for errors.
+4. Job Applications Not Saving
+• Ensure all required fields are filled.
+• Verify the backend endpoint POST /job/createApplication is working.
+5. Unable to save job application using Chrome Extension
+• Ensure you are logged in to the main dashboard in the same chrome session
+and if you still receive a “Please log in to the dashboard first” then try
+logging in again.
+
+• Verify your dashboard to see if the job applications are being saved
+correctly.
+Appendix: Database Schema
+statement to create the addres table
+
+CREATE TABLE `address` (
+`id` int NOT NULL AUTO_INCREMENT,
+`street` varchar(255) DEFAULT NULL,
+`city` varchar(45) DEFAULT NULL,
+`state` varchar(45) DEFAULT NULL,
+`zipcode` int DEFAULT NULL,
+`Country` varchar(45) DEFAULT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
+
+statement to create the user table
+
+CREATE TABLE `user` (
+`user_id` int NOT NULL AUTO_INCREMENT,
+`user_name` varchar(45) DEFAULT NULL,
+`password` text NOT NULL,
+`first_name` varchar(45) DEFAULT NULL,
+`last_name` varchar(45) DEFAULT NULL,
+`email` varchar(45) DEFAULT NULL,
+`address_id` int DEFAULT NULL,
+
+`phone_number` bigint DEFAULT NULL,
+PRIMARY KEY (`user_id`),
+KEY `address_id_idx` (`address_id`),
+CONSTRAINT `address_id` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`)
+ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
+
+statement to create the job_application table
+
+CREATE TABLE `job_application` (
+`application_id` int NOT NULL AUTO_INCREMENT,
+`user_name` varchar(45) DEFAULT NULL,
+`company_name` varchar(45) DEFAULT NULL,
+`job_description` varchar(45) DEFAULT NULL,
+`date_applied` varchar(45) DEFAULT NULL,
+`status` varchar(45) DEFAULT NULL,
+`notes` text,
+UNIQUE KEY `application_id_UNIQUE` (`application_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
+
+statement to create the event table
+
+CREATE TABLE `event` (
+`event_id` int NOT NULL AUTO_INCREMENT,
+`user_name` varchar(45) NOT NULL,
+`event_title` varchar(45) DEFAULT NULL,
+`event_category` varchar(45) DEFAULT NULL,
+
+`event_date` varchar(45) DEFAULT NULL,
+PRIMARY KEY (`event_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
+
+

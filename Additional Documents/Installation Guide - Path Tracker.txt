@@ -1,0 +1,64 @@
+DISCLAIMER:
+For this purpose will be instructing you through the launching guide for the HTTPS method and cloning
+the repository to Visual Studio Code as the primary IDE.
+Cloning Repository:
+Click the green “Code” button at the top of the GitHub page and select the method of cloning you’d like
+to use
+
+Once you copy the link, open Visual Studio Code to a new window and select “Clone Git Repository”
+
+Select “Github” when prompted and then paste the copied link you got in the first step:
+
+Once you hit Enter, it’ll ask you where you’d like to save the repository. Here, I created a new folder
+where it can be saved:
+
+Once you select the repository destination you’re ready to start modifying the code to run.
+
+Database Setup:
+Under the application properties file of the backend the command hibernate.ddl.auto should be
+changed accordingly to the necessities if it is the first time that the program is run the command should
+be set to create. This will automatically create the necessary tables with all its mapings.
+
+Backend Setup:
+Make sure you’ve set up the database before continuing forward.
+First, you’ll want to go to the”application.properties” file to modify some information that is essential for
+the backend to properly function.
+You’ll want to change the three fields with comments below them: “url”, “username”, and “password”
+For “url”, you just have to change “capstone” to the name you gave the database. If you didn’t change
+the name or named it the same don’t worry about it.the “3306” might have to be changed if you
+changed it while creating the database, if not then again don’t worry about it.
+“Username”, here put the username you set to access the database, if you made it the same then don’t
+worry about it.
+
+“Password”, here put the password you set to access the database.:
+
+Next, you’ll need to create a new Terminal session. You can do so by pressing this icon at the top:
+
+You’l want to then cd into the backend project using the command below:
+“cd .\Backend\SpringApp\”
+
+--This is important, if you don’t “cd” into the backend then the following steps won’t work properly-Once you’ve confirmed you “cd” correctly, you can run the code below to run the Backend:
+“mvn spring-boot:run”
+
+You’ll know it's running correctly if this is the message you get after its done:
+
+Front-end Setup:
+Do not close this terminal session, but instead create a new one using the plus sign on the right of the
+window:
+
+Once you have started a new session, cd into the Frontend using the command below:
+“cd .\Front-end\sakai-ng-master\”
+
+From here, confirm you’ve “cd” correctly then install npm using the command below:
+
+“npm install”
+
+Once npm has been installed correctly, you can run the command below to run the Front-end:
+“ng serve”
+
+You’ll know its running correctly if you get a “localhost” link.
+
+Once you get it, you can either “CTRL + Click” to open up your primary browser to view the site, or copy
+and paste the link into your preferred browser.
+
+
