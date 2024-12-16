@@ -21,8 +21,6 @@ export class EditUserComponent implements OnInit {
     ) {
         // Initialize forms
         this.userForm = this.fb.group({
-            userID: [''], // Should be populated from backend
-            username: ['', Validators.required],
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
@@ -31,7 +29,6 @@ export class EditUserComponent implements OnInit {
         });
 
         this.passwordForm = this.fb.group({
-            currentPassword: ['', Validators.required],
             newPassword: ['', [Validators.required, Validators.minLength(6)]],
             confirmPassword: ['', Validators.required],
         });
@@ -45,10 +42,16 @@ export class EditUserComponent implements OnInit {
     loadUserData(): void {
         this.isLoading = true;
 
-        // Replace with the actual backend endpoint to fetch user details
         this.http.get<any>('http://localhost:8081/user/details').subscribe(
             (user) => {
-                this.userForm.patchValue(user);
+                // Patch the user data into the form
+                this.userForm.patchValue({
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    address: user.address,
+                    phoneNumber: user.phoneNumber,
+                });
                 this.isLoading = false;
             },
             (error) => {
@@ -65,64 +68,94 @@ export class EditUserComponent implements OnInit {
 
     // Update user details
     updateUser(): void {
-        if (this.userForm.invalid) {
-            return;
-        }
-
-        const userData = this.userForm.value;
-
-        this.http.put('http://localhost:8081/user/updateUser/', userData).subscribe(
-            (response) => {
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: 'User details updated successfully!',
-                });
-            },
-            (error) => {
-                console.error('Error updating user details:', error);
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Failed to update user details.',
-                });
-            }
-        );
-    }
+      if (this.userForm.invalid) {
+          return;
+      }
+  
+      const userData = this.userForm.value;
+  
+      this.http.put('http://localhost:8081/user/updateUser/', userData).subscribe(
+          (response) => {
+              // Success message
+              this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'User information updated successfully!',
+              });
+          },
+          (error) => {
+              console.error('Error updating user details:', error);
+              // Error message
+              this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'Failed to update user details.',
+              });
+          }
+      );
+  }
+  
 
     // Update password
     updatePassword(): void {
-        if (this.passwordForm.invalid) {
-            return;
-        }
+      if (this.passwordForm.invalid) {
+          return;
+      }
+  
+      const { newPassword, confirmPassword } = this.passwordForm.value;
+  
+      if (newPassword !== confirmPassword) {
+          // Error message for mismatched passwords
+          this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'New password and confirm password do not match.',
+          });
+          return;
+      }
+  
+      // Call backend to update password
+      this.http.put('http://localhost:8081/user/updatePassword', { password: newPassword }).subscribe(
+          (response) => {
+              // Success message
+              this.messageService.add({
+                  severity: 'success',
+                  summary: 'Success',
+                  detail: 'Password has been successfully updated!',
+              });
+          },
+          (error) => {
+              console.error('Error updating password:', error);
+              // Error message
+              this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'Failed to update password.',
+              });
+          }
+      );
+  }
+  
 
-        const { currentPassword, newPassword, confirmPassword } = this.passwordForm.value;
-
-        if (newPassword !== confirmPassword) {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'New password and confirm password do not match.',
-            });
-            return;
-        }
-
-        this.http.put('http://localhost:8081/user/updatePassword', { password: newPassword }).subscribe(
-            (response) => {
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: 'Password updated successfully!',
-                });
-            },
-            (error) => {
-                console.error('Error updating password:', error);
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Failed to update password.',
-                });
-            }
-        );
-    }
+    cancelUpdate(): void {
+      // Reset the user form to its initial values
+      this.userForm.reset();
+      this.loadUserData(); // Reload current user data
+      this.messageService.add({
+          severity: 'info',
+          summary: 'Info',
+          detail: 'Changes canceled.',
+      });
+  }
+  
+  cancelPasswordUpdate(): void {
+      // Reset the password form
+      this.passwordForm.reset();
+      this.messageService.add({
+          severity: 'info',
+          summary: 'Info',
+          detail: 'Password update canceled.',
+      });
+  }
+  
 }
