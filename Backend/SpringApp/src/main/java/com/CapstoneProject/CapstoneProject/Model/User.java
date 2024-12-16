@@ -133,6 +133,10 @@ public class User {
         return address;
     }
 
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
 
     public Long getPhoneNumber() {
         return phoneNumber;

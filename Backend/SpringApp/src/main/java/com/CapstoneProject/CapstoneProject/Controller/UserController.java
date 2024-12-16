@@ -30,6 +30,12 @@ public class UserController {
 
     }
 
+    @GetMapping("/details")
+    public ResponseEntity<User> getUserDetails() {
+        return service.getUserDetails();
+    }
+
+
     @DeleteMapping ("/deleteUser/")
         public ResponseEntity<User> deleteUser(){
             return service.deleteUser();

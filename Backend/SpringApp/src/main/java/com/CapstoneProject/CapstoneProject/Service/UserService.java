@@ -68,24 +68,41 @@ public class UserService {
     }
 
     public ResponseEntity<User> updateUserInfo(String firstName,
-                                           String lastName,
-                                           String email,
-                                           Address address,
-                                           Long phoneNumber)
-    {
+                                               String lastName,
+                                               String email,
+                                               Address address,
+                                               Long phoneNumber) {
+        // Retrieve the authenticated user's username from the security context
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        User user = new User(username, firstName, lastName, email, address, phoneNumber);
 
-        Optional<User> usernameExists = Optional.ofNullable(userRepo.findByUsername(username));
+        // Find the existing user
+        User existingUser = userRepo.findByUsername(username);
 
-        if(usernameExists.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).header("Error", "username not found").body(user);
+        if (existingUser == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("Error", "Username not found")
+                    .body(null);
+        }
 
-        userRepo.save(user);
+        // Update only the relevant fields
+        if (firstName != null) existingUser.setFirstName(firstName);
+        if (lastName != null) existingUser.setLastName(lastName);
+        if (email != null) existingUser.setEmail(email);
+        if (address != null) {
+            Address newAddress = addressRepo.save(address);
+            existingUser.setAddress(newAddress);
+        }
+        if (phoneNumber != null) existingUser.setPhoneNumber(phoneNumber);
 
-        return ResponseEntity.status(HttpStatus.OK).header("Success", "User has been modified").body(user);
+        // Save the updated user back to the database
+        userRepo.save(existingUser);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Success", "User has been modified")
+                .body(existingUser);
     }
+
 
     public ResponseEntity<User> updatePassword (String password){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -101,6 +118,24 @@ public class UserService {
 
         return ResponseEntity.status(HttpStatus.OK).header("Success", "Password has been modified").body(user);
     }
+
+    public ResponseEntity<User> getUserDetails() {
+        // Retrieve the authenticated user's username from the security context
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // Find the user by their username
+        User user = userRepo.findByUsername(username);
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .header("Error", "User not found")
+                    .body(null);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
 
     public ResponseEntity<User> deleteUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
